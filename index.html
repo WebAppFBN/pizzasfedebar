@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Don Horno - Pizzería a domicilio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Karla:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dh-char: #211712;
+            --dh-char-2: #2c1f17;
+            --dh-tomato: #b6391f;
+            --dh-tomato-dark: #8c2a16;
+            --dh-crust: #e3a93f;
+            --dh-semolina: #f4e8cf;
+            --dh-mozz: #fffcf4;
+            --dh-basil: #445734;
+            --dh-line: rgba(33, 23, 18, 0.14);
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: var(--dh-semolina);
+            color: var(--dh-char);
+            min-height: 100vh;
+            line-height: 1.45;
+        }
+
+        .dh-display {
+            font-family: 'Fraunces', serif;
+        }
+        .dh-mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* ---------- top bar ---------- */
+        .dh-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: var(--dh-char);
+            color: var(--dh-mozz);
+            border-bottom: 3px solid var(--dh-tomato);
+        }
+        .dh-brand-name {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: 0.3px;
+        }
+        .dh-cart-btn {
+            position: relative;
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .dh-cart-btn:hover {
+            background: var(--dh-tomato-dark);
+            transform: translateY(-1px);
+        }
+        .dh-cart-count {
+            background: var(--dh-mozz);
+            color: var(--dh-tomato);
+            border-radius: 999px;
+            min-width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 0 5px;
+        }
+
+        /* ---------- hero ---------- */
+        .dh-hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(560px 320px at 12% 15%, rgba(227, 169, 63, 0.28), transparent 60%),
+                radial-gradient(500px 300px at 88% 85%, rgba(182, 57, 31, 0.35), transparent 60%),
+                var(--dh-char);
+            color: var(--dh-mozz);
+            padding: 64px 20px 88px;
+        }
+        .dh-hero-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .dh-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 252, 244, 0.35);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--dh-crust);
+            margin-bottom: 22px;
+        }
+        .dh-badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dh-crust);
+        }
+        .dh-hero h1 {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: clamp(34px, 6vw, 62px);
+            line-height: 1.05;
+            margin: 0 0 18px;
+        }
+        .dh-hero h1 span {
+            color: var(--dh-crust);
+            font-style: normal;
+        }
+        .dh-hero p {
+            font-size: 17px;
+            color: rgba(255, 252, 244, 0.82);
+            max-width: 560px;
+            margin: 0 auto 30px;
+        }
+        .dh-hero-ctas {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .dh-btn-primary {
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 14px 26px;
+            border-radius: 10px;
+            font-family: 'Karla', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .dh-btn-primary:hover {
+            background: var(--dh-tomato-dark);
+            transform: translateY(-2px);
+        }
+        .dh-btn-ghost {
+            background: transparent;
+            color: var(--dh-mozz);
+            border: 1px solid rgba(255, 252, 244, 0.4);
+            padding: 14px 26px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            font-family: 'Karla', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.15s ease;
+        }
+        .dh-btn-ghost:hover {
+            background: rgba(255, 252, 244, 0.1);
+        }
+
+        /* ---------- section ---------- */
+        .dh-section {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 56px 20px;
+        }
+        .dh-section-head {
+            text-align: center;
+            margin-bottom: 34px;
+        }
+        .dh-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--dh-tomato);
+            display: block;
+            margin-bottom: 8px;
+        }
+        .dh-section-head h2 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(26px, 4vw, 38px);
+            margin: 0;
+        }
+
+        /* ---------- filters ---------- */
+        .dh-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+        .dh-filter {
+            border: 1.5px solid var(--dh-char);
+            background: transparent;
+            color: var(--dh-char);
+            padding: 9px 18px;
+            border-radius: 999px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12.5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .dh-filter.active {
+            background: var(--dh-char);
+            color: var(--dh-semolina);
+        }
+
+        /* ---------- menu grid ---------- */
+        .dh-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .dh-card {
+            position: relative;
+            background: var(--dh-mozz);
+            border-radius: 4px;
+            box-shadow: 0 10px 24px rgba(33, 23, 18, 0.12);
+            padding-bottom: 18px;
+            overflow: visible;
+        }
+        .dh-card-img-wrap {
+            position: relative;
+            height: 170px;
+            overflow: hidden;
+            border-radius: 4px 4px 0 0;
+        }
+        .dh-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .dh-stamp {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--dh-char);
+            color: var(--dh-crust);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 5px 9px;
+            border-radius: 3px;
+        }
+        .dh-notch {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--dh-semolina);
+            top: 170px;
+            margin-top: -9px;
+        }
+        .dh-notch.left {
+            left: -9px;
+        }
+        .dh-notch.right {
+            right: -9px;
+        }
+        .dh-tear {
+            border: none;
+            border-top: 2px dashed var(--dh-line);
+            margin: 0 16px;
+        }
+        .dh-card-body {
+            padding: 16px 18px 0;
+        }
+        .dh-card-body h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            margin: 0 0 6px;
+        }
+        .dh-card-body p {
+            font-size: 13.5px;
+            color: rgba(33, 23, 18, 0.68);
+            margin: 0 0 14px;
+            min-height: 38px;
+        }
+        .dh-card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px 0;
+        }
+        .dh-price {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .dh-add-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dh-qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-char);
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .dh-qty-btn:hover {
+            background: var(--dh-char);
+            color: var(--dh-mozz);
+        }
+        .dh-qty-val {
+            min-width: 16px;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+        }
+        .dh-add-btn {
+            background: var(--dh-basil);
+            color: var(--dh-mozz);
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Karla', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .dh-add-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        /* ---------- info strip ---------- */
+        .dh-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 20px 10px;
+        }
+        .dh-strip-item {
+            background: var(--dh-mozz);
+            border-radius: 6px;
+            padding: 20px;
+            border-left: 4px solid var(--dh-tomato);
+        }
+        .dh-strip-item h4 {
+            margin: 0 0 6px;
+            font-family: 'Fraunces', serif;
+            font-size: 17px;
+        }
+        .dh-strip-item p {
+            margin: 0;
+            font-size: 13.5px;
+            color: rgba(33, 23, 18, 0.68);
+        }
+
+        /* ---------- cart drawer ---------- */
+        .dh-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(33, 23, 18, 0.55);
+            z-index: 40;
+            display: none;
+        }
+        .dh-overlay.open {
+            display: block;
+        }
+        .dh-drawer {
+            position: fixed;
+            top: 0;
+            right: -430px;
+            height: 100%;
+            width: min(430px, 100%);
+            background: var(--dh-semolina);
+            z-index: 50;
+            overflow-y: auto;
+            box-shadow: -12px 0 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+        }
+        .dh-drawer.open {
+            right: 0;
+        }
+        .dh-drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            background: var(--dh-char);
+            color: var(--dh-mozz);
+        }
+        .dh-drawer-head h3 {
+            margin: 0;
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+        }
+        .dh-close-btn {
+            background: none;
+            border: none;
+            color: var(--dh-mozz);
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .dh-drawer-body {
+            padding: 18px 20px 100px;
+            flex: 1;
+        }
+        .dh-empty-cart {
+            text-align: center;
+            padding: 40px 10px;
+            color: rgba(33, 23, 18, 0.6);
+        }
+        .dh-line-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--dh-line);
+        }
+        .dh-line-item-name {
+            font-weight: 700;
+            font-size: 14.5px;
+        }
+        .dh-line-item-sub {
+            font-size: 12px;
+            color: rgba(33, 23, 18, 0.6);
+            font-family: 'Space Mono', monospace;
+        }
+        .dh-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .dh-form-group {
+            margin-bottom: 14px;
+        }
+        .dh-form-group label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            color: var(--dh-char-2);
+        }
+        .dh-form-group input,
+        .dh-form-group textarea,
+        .dh-form-group select {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-line);
+            background: var(--dh-mozz);
+            font-family: 'Karla', sans-serif;
+            font-size: 14px;
+            color: var(--dh-char);
+        }
+        .dh-form-group input:focus,
+        .dh-form-group textarea:focus,
+        .dh-form-group select:focus {
+            outline: 2px solid var(--dh-tomato);
+            outline-offset: 1px;
+            border-color: var(--dh-tomato);
+        }
+        .dh-error {
+            color: var(--dh-tomato-dark);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .dh-pay-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .dh-pay-opt {
+            border: 1.5px solid var(--dh-line);
+            border-radius: 6px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 600;
+            background: var(--dh-mozz);
+        }
+        .dh-pay-opt.active {
+            border-color: var(--dh-tomato);
+            background: rgba(182, 57, 31, 0.08);
+            color: var(--dh-tomato-dark);
+        }
+        .dh-drawer-footer {
+            position: sticky;
+            bottom: 0;
+            background: var(--dh-semolina);
+            padding: 16px 20px;
+            border-top: 1px solid var(--dh-line);
+        }
+        .dh-confirm-btn {
+            width: 100%;
+            background: #25d366;
+            color: #05320f;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Karla', sans-serif;
+        }
+        .dh-confirm-btn:hover {
+            filter: brightness(0.95);
+        }
+        .dh-success {
+            background: rgba(68, 87, 52, 0.12);
+            border: 1px solid var(--dh-basil);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 14px;
+            font-size: 13.5px;
+        }
+
+        /* ---------- floating whatsapp ---------- */
+        .dh-fab {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 35;
+            background: #25d366;
+            color: #05320f;
+            border-radius: 999px;
+            border: none;
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .dh-fab:hover {
+            transform: scale(1.05);
+        }
+
+        /* ---------- footer ---------- */
+        .dh-footer {
+            background: var(--dh-char);
+            color: rgba(255, 252, 244, 0.75);
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 13.5px;
+        }
+        .dh-footer strong {
+            color: var(--dh-mozz);
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .dh-hero {
+                padding: 48px 16px 70px;
+            }
+            .dh-section {
+                padding: 44px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dh-app">
+        <!-- top bar -->
+        <div class="dh-topbar">
+            <div class="dh-brand">
+                <span class="dh-brand-name">Don Horno</span>
+            </div>
+            <button class="dh-cart-btn" onclick="toggleCart()">
+                Mi pedido
+                <span class="dh-cart-count" id="cartCount" style="display:none;">0</span>
+            </button>
+        </div>
+
+        <!-- hero -->
+        <section class="dh-hero">
+            <div class="dh-hero-inner">
+                <span class="dh-badge">
+                    <span class="dh-badge-dot"></span>
+                    Delivery sin cargo
+                </span>
+                <h1 class="dh-display">
+                    Pizza a la leña, <span>directo a tu puerta</span>
+                </h1>
+                <p>
+                    Elegí tus pizzas favoritas, recién horneadas para comer ya o listas para
+                    hornear en casa. Te las llevamos sin costo de envío.
+                </p>
+                <div class="dh-hero-ctas">
+                    <button class="dh-btn-primary" onclick="document.getElementById('dh-menu').scrollIntoView({ behavior: 'smooth' })">
+                        Ver el menú
+                    </button>
+                    <a class="dh-btn-ghost" href="https://wa.me/5493880000000" target="_blank" rel="noreferrer">
+                        Consultar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- info strip -->
+        <div class="dh-strip">
+            <div class="dh-strip-item">
+                <h4>Delivery gratis</h4>
+                <p>Sin costo de envío en toda la zona de reparto.</p>
+            </div>
+            <div class="dh-strip-item">
+                <h4>Recién horneada o para hornear</h4>
+                <p>Vos elegís: la comés apenas llega o la horneás cuando quieras.</p>
+            </div>
+            <div class="dh-strip-item">
+                <h4>Pago como prefieras</h4>
+                <p>Efectivo, transferencia o tarjeta al recibir el pedido.</p>
+            </div>
+        </div>
+
+        <!-- menu -->
+        <section class="dh-section" id="dh-menu">
+            <div class="dh-section-head">
+                <span class="dh-eyebrow">Nuestro menú</span>
+                <h2 class="dh-display">Elegí tu pizza</h2>
+            </div>
+
+            <div class="dh-filters" id="filters">
+                <button class="dh-filter active" data-categoria="todas" onclick="filtrarMenu('todas')">Todas</button>
+                <button class="dh-filter" data-categoria="lista" onclick="filtrarMenu('lista')">Para hornear</button>
+                <button class="dh-filter" data-categoria="cocida" onclick="filtrarMenu('cocida')">Recién horneadas</button>
+            </div>
+
+            <div class="dh-grid" id="menuGrid"></div>
+        </section>
+
+        <!-- footer -->
+        <footer class="dh-footer">
+            <strong>Don Horno</strong>
+            Pizzas a domicilio · Delivery sin cargo
+            <div style="margin-top: 6px;">Escribinos por WhatsApp para cualquier consulta</div>
+        </footer>
+
+        <!-- floating whatsapp button -->
+        <a class="dh-fab" href="https://wa.me/5493880000000?text=Hola%20Don%20Horno%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
+            <svg viewBox="0 0 32 32" width="28" height="28" fill="#05320f">
+                <path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.36.66 4.56 1.8 6.44L4 29l7.72-1.75a12.9 12.9 0 0 0 4.3.73c6.62 0 12.02-5.4 12.02-12.02C28.04 8.4 22.64 3 16.02 3zm0 21.9c-1.36 0-2.68-.28-3.9-.83l-.28-.13-4.6 1.04 1-4.48-.18-.29a9.87 9.87 0 0 1-1.53-5.19c0-5.46 4.44-9.9 9.9-9.9 5.46 0 9.9 4.44 9.9 9.9 0 5.46-4.44 9.88-9.9 9.88zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.16-.17.2-.34.22-.63.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.19-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z" />
+            </svg>
+        </a>
+
+        <!-- cart drawer -->
+        <div class="dh-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+        <div class="dh-drawer" id="cartDrawer">
+            <div class="dh-drawer-head">
+                <h3>Tu pedido</h3>
+                <button class="dh-close-btn" onclick="toggleCart()">×</button>
+            </div>
+            <div class="dh-drawer-body" id="cartBody">
+                <div class="dh-empty-cart">Todavía no agregaste ninguna pizza.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURACIÓN
+        // ============================================================
+        const WHATSAPP_NUMBER = "5493880000000"; // <-- Reemplazar con tu número
+        const MENU_KEY = "dh_menu";
+        const PEDIDOS_KEY = "dh_pedidos";
+
+        const MENU_POR_DEFECTO = [{
+            id: "m1",
+            nombre: "Muzzarella",
+            descripcion: "Salsa de tomate, muzzarella y orégano.",
+            precio: 8500,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1548365328-9f547fb0953e?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m2",
+            nombre: "Napolitana",
+            descripcion: "Muzzarella, tomate en rodajas, ajo y albahaca fresca.",
+            precio: 9800,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m3",
+            nombre: "Fugazzeta",
+            descripcion: "Doble muzzarella y cebolla a la parrilla.",
+            precio: 9200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m4",
+            nombre: "Especial",
+            descripcion: "Muzzarella, jamón cocido y morrones asados.",
+            precio: 10500,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m5",
+            nombre: "Cuatro Quesos",
+            descripcion: "Muzzarella, provolone, roquefort y parmesano.",
+            precio: 11200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m6",
+            nombre: "Calabresa",
+            descripcion: "Muzzarella, longaniza calabresa y morrones.",
+            precio: 10200,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }];
+
+        // ============================================================
+        // ESTADO GLOBAL
+        // ============================================================
+        let menu = [...MENU_POR_DEFECTO];
+        let categoriaActual = "todas";
+        let carrito = {};
+        let cartOpen = false;
+        let enviado = false;
+        let datosCliente = {
+            nombre: "",
+            telefono: "",
+            direccion: "",
+            referencias: "",
+            pago: "efectivo"
+        };
+
+        // ============================================================
+        // FUNCIONES AUXILIARES
+        // ============================================================
+        function formatARS(n) {
+            return n.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                maximumFractionDigits: 0
+            });
+        }
+
+        // ============================================================
+        // CARGAR MENÚ DESDE LOCALSTORAGE
+        // ============================================================
+        function cargarMenu() {
+            try {
+                const raw = localStorage.getItem(MENU_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length) {
+                        menu = parsed;
+                    }
+                }
+            } catch (e) {
+                // Si falla, usar menú por defecto
+            }
+            renderizarMenu();
+        }
+
+        // ============================================================
+        // RENDERIZAR MENÚ
+        // ============================================================
+        function renderizarMenu() {
+            const grid = document.getElementById('menuGrid');
+            const menuFiltrado = menu.filter(p =>
+                p.disponible !== false &&
+                (categoriaActual === "todas" || p.categoria === categoriaActual)
+            );
+
+            if (menuFiltrado.length === 0) {
+                grid.innerHTML = `
+                    <p style="text-align:center;grid-column:1/-1;color:rgba(33,23,18,0.6);">
+                        No hay pizzas disponibles en esta categoría por ahora.
+                    </p>
+                `;
+                return;
+            }
+
+            grid.innerHTML = menuFiltrado.map(pizza => {
+                const cantidad = carrito[pizza.id] || 0;
+                return `
+                    <div class="dh-card" data-id="${pizza.id}">
+                        <div class="dh-card-img-wrap">
+                            <img class="dh-card-img" src="${pizza.imagen}" alt="${pizza.nombre}" />
+                            <span class="dh-stamp">${pizza.categoria === "lista" ? "Para hornear" : "Recién horneada"}</span>
+                        </div>
+                        <span class="dh-notch left"></span>
+                        <span class="dh-notch right"></span>
+                        <div class="dh-card-body">
+                            <h3>${pizza.nombre}</h3>
+                            <p>${pizza.descripcion}</p>
+                        </div>
+                        <hr class="dh-tear" />
+                        <div class="dh-card-foot">
+                            <span class="dh-price dh-mono">${formatARS(pizza.precio)}</span>
+                            ${cantidad === 0 ? `
+                                <button class="dh-add-btn" onclick="cambiarCantidad('${pizza.id}', 1)">
+                                    Agregar
+                                </button>
+                            ` : `
+                                <div class="dh-add-controls">
+                                    <button class="dh-qty-btn" onclick="cambiarCantidad('${pizza.id}', -1)">−</button>
+                                    <span class="dh-qty-val">${cantidad}</span>
+                                    <button class="dh-qty-btn" onclick="cambiarCantidad('${pizza.id}', 1)">+</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        // FILTRAR MENÚ
+        // ============================================================
+        function filtrarMenu(categoria) {
+            categoriaActual = categoria;
+            document.querySelectorAll('.dh-filter').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.categoria === categoria);
+            });
+            renderizarMenu();
+        }
+
+        // ============================================================
+        // CARRITO
+        // ============================================================
+        function cambiarCantidad(id, delta) {
+            const actual = carrito[id] || 0;
+            const nueva = Math.max(0, actual + delta);
+            if (nueva === 0) {
+                delete carrito[id];
+            } else {
+                carrito[id] = nueva;
+            }
+            actualizarCarrito();
+            renderizarMenu();
+        }
+
+        function obtenerItemsCarrito() {
+            return Object.entries(carrito)
+                .map(([id, cantidad]) => {
+                    const pizza = menu.find(p => p.id === id);
+                    return pizza && cantidad > 0 ? { ...pizza, cantidad } : null;
+                })
+                .filter(Boolean);
+        }
+
+        function calcularTotal() {
+            const items = obtenerItemsCarrito();
+            return items.reduce((acc, it) => acc + it.precio * it.cantidad, 0);
+        }
+
+        function calcularTotalUnidades() {
+            const items = obtenerItemsCarrito();
+            return items.reduce((acc, it) => acc + it.cantidad, 0);
+        }
+
+        function actualizarCarrito() {
+            const totalUnidades = calcularTotalUnidades();
+            const cartCount = document.getElementById('cartCount');
+            if (totalUnidades > 0) {
+                cartCount.style.display = 'inline-flex';
+                cartCount.textContent = totalUnidades;
+            } else {
+                cartCount.style.display = 'none';
+            }
+            renderizarCarrito();
+        }
+
+        function toggleCart() {
+            cartOpen = !cartOpen;
+            document.getElementById('cartOverlay').classList.toggle('open', cartOpen);
+            document.getElementById('cartDrawer').classList.toggle('open', cartOpen);
+            if (cartOpen) {
+                renderizarCarrito();
+            }
+        }
+
+        function renderizarCarrito() {
+            const body = document.getElementById('cartBody');
+            const items = obtenerItemsCarrito();
+            const total = calcularTotal();
+
+            if (items.length === 0) {
+                body.innerHTML = `<div class="dh-empty-cart">Todavía no agregaste ninguna pizza.</div>`;
+                return;
+            }
+
+            let html = `
+                ${enviado ? `<div class="dh-success">¡Listo! Te abrimos WhatsApp con el detalle del pedido. Confirmá el envío desde ahí.</div>` : ''}
+                ${items.map(it => `
+                    <div class="dh-line-item">
+                        <div>
+                            <div class="dh-line-item-name">${it.nombre}</div>
+                            <div class="dh-line-item-sub">${it.cantidad} x ${formatARS(it.precio)}</div>
+                        </div>
+                        <div class="dh-add-controls">
+                            <button class="dh-qty-btn" onclick="cambiarCantidad('${it.id}', -1)">−</button>
+                            <span class="dh-qty-val">${it.cantidad}</span>
+                            <button class="dh-qty-btn" onclick="cambiarCantidad('${it.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `).join('')}
+                <div class="dh-total-row">
+                    <span>Total</span>
+                    <span>${formatARS(total)}</span>
+                </div>
+                <hr class="dh-tear" style="margin:18px 0;" />
+
+                <div class="dh-form-group">
+                    <label>Nombre y apellido</label>
+                    <input type="text" id="clienteNombre" value="${datosCliente.nombre}" placeholder="Ej: Ana Gómez" />
+                </div>
+
+                <div class="dh-form-group">
+                    <label>Teléfono de contacto</label>
+                    <input type="tel" id="clienteTelefono" value="${datosCliente.telefono}" placeholder="Ej: 388 4123456" />
+                </div>
+
+                <div class="dh-form-group">
+                    <label>Dirección de entrega</label>
+                    <input type="text" id="clienteDireccion" value="${datosCliente.direccion}" placeholder="Calle, número, barrio" />
+                </div>
+
+                <div class="dh-form-group">
+                    <label>Referencias (opcional)</label>
+                    <textarea rows="2" id="clienteReferencias" placeholder="Piso, timbre, punto de referencia...">${datosCliente.referencias}</textarea>
+                </div>
+
+                <div class="dh-form-group">
+                    <label>Medio de pago</label>
+                    <div class="dh-pay-options">
+                        ${['efectivo', 'transferencia', 'tarjeta'].map(p => `
+                            <div class="dh-pay-opt ${datosCliente.pago === p ? 'active' : ''}" 
+                                 onclick="datosCliente.pago='${p}'; renderizarCarrito();">
+                                ${p === 'efectivo' ? 'Efectivo' : p === 'transferencia' ? 'Transferencia' : 'Tarjeta'}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="dh-drawer-footer">
+                    <button class="dh-confirm-btn" onclick="confirmarPedido()">
+                        Confirmar pedido por WhatsApp
+                    </button>
+                </div>
+            `;
+
+            body.innerHTML = html;
+
+            // Sincronizar inputs
+            document.getElementById('clienteNombre')?.addEventListener('input', (e) => {
+                datosCliente.nombre = e.target.value;
+            });
+            document.getElementById('clienteTelefono')?.addEventListener('input', (e) => {
+                datosCliente.telefono = e.target.value;
+            });
+            document.getElementById('clienteDireccion')?.addEventListener('input', (e) => {
+                datosCliente.direccion = e.target.value;
+            });
+            document.getElementById('clienteReferencias')?.addEventListener('input', (e) => {
+                datosCliente.referencias = e.target.value;
+            });
+        }
+
+        // ============================================================
+        // VALIDAR Y CONFIRMAR PEDIDO
+        // ============================================================
+        function validar() {
+            const err = {};
+            if (!datosCliente.nombre.trim()) err.nombre = "Falta tu nombre";
+            if (!datosCliente.telefono.trim()) err.telefono = "Falta un teléfono de contacto";
+            if (!datosCliente.direccion.trim()) err.direccion = "Falta la dirección de entrega";
+            if (obtenerItemsCarrito().length === 0) err.carrito = "Agregá al menos una pizza";
+            return Object.keys(err).length === 0;
+        }
+
+        function confirmarPedido() {
+            if (!validar()) {
+                alert('Por favor, completá todos los campos obligatorios.');
+                return;
+            }
+
+            const items = obtenerItemsCarrito();
+            const total = calcularTotal();
+
+            const pedido = {
+                id: `p_${Date.now()}`,
+                fecha: new Date().toISOString(),
+                estado: "Nuevo",
+                cliente: { ...datosCliente },
+                items: items.map(({ id, nombre, precio, cantidad }) => ({
+                    id,
+                    nombre,
+                    precio,
+                    cantidad
+                })),
+                total
+            };
+
+            // Guardar en localStorage
+            try {
+                const raw = localStorage.getItem(PEDIDOS_KEY);
+                const previos = raw ? JSON.parse(raw) : [];
+                localStorage.setItem(PEDIDOS_KEY, JSON.stringify([pedido, ...previos]));
+            } catch (e) {
+                // Si falla, igual se envía por WhatsApp
+            }
+
+            // Generar mensaje para WhatsApp
+            const lineas = items
+                .map(it => `• ${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}`)
+                .join('%0A');
+
+            const metodoPago = {
+                efectivo: "Efectivo",
+                transferencia: "Transferencia",
+                tarjeta: "Tarjeta al recibir"
+            } [datosCliente.pago];
+
+            const mensaje =
+                `*Pedido Don Horno*%0A%0A` +
+                `${lineas}%0A%0A` +
+                `*Total: ${formatARS(total)}*%0A%0A` +
+                `*Nombre:* ${encodeURIComponent(datosCliente.nombre)}%0A` +
+                `*Teléfono:* ${encodeURIComponent(datosCliente.telefono)}%0A` +
+                `*Dirección:* ${encodeURIComponent(datosCliente.direccion)}%0A` +
+                (datosCliente.referencias ? `*Referencias:* ${encodeURIComponent(datosCliente.referencias)}%0A` : '') +
+                `*Pago:* ${metodoPago}`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`, '_blank');
+
+            enviado = true;
+            carrito = {};
+            actualizarCarrito();
+            renderizarMenu();
+            setTimeout(() => {
+                toggleCart();
+                enviado = false;
+            }, 2000);
+        }
+
+        // ============================================================
+        // INICIALIZAR
+        // ============================================================
+        cargarMenu();
+        actualizarCarrito();
+    </script>
+</body>
+</html>

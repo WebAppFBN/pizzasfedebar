@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Don Horno - Administración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900&family=Karla:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dh-char: #211712;
+            --dh-tomato: #b6391f;
+            --dh-tomato-dark: #8c2a16;
+            --dh-crust: #e3a93f;
+            --dh-semolina: #f4e8cf;
+            --dh-mozz: #fffcf4;
+            --dh-basil: #445734;
+            --dh-line: rgba(33, 23, 18, 0.14);
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: var(--dh-semolina);
+            color: var(--dh-char);
+            min-height: 100vh;
+        }
+
+        /* login */
+        .da-login-wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .da-login-card {
+            background: var(--dh-mozz);
+            border-radius: 10px;
+            padding: 36px 30px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 14px 30px rgba(33, 23, 18, 0.15);
+        }
+        .da-login-card h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 24px;
+            margin: 0 0 6px;
+        }
+        .da-login-card p {
+            font-size: 13.5px;
+            color: rgba(33, 23, 18, 0.65);
+            margin: 0 0 22px;
+        }
+        .da-login-card input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-line);
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Karla', sans-serif;
+        }
+        .da-login-card input:focus {
+            outline: 2px solid var(--dh-tomato);
+            border-color: var(--dh-tomato);
+        }
+        .da-login-btn {
+            width: 100%;
+            background: var(--dh-char);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .da-login-btn:hover {
+            background: var(--dh-tomato-dark);
+        }
+        .da-login-error {
+            color: var(--dh-tomato-dark);
+            font-size: 12.5px;
+            margin: -4px 0 12px;
+        }
+
+        /* header */
+        .da-header {
+            background: var(--dh-char);
+            color: var(--dh-mozz);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--dh-tomato);
+        }
+        .da-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            margin: 0;
+        }
+        .da-header span {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--dh-crust);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .da-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 20px 24px 0;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .da-tab {
+            border: 1.5px solid var(--dh-char);
+            background: transparent;
+            color: var(--dh-char);
+            padding: 9px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+        .da-tab.active {
+            background: var(--dh-char);
+            color: var(--dh-semolina);
+        }
+
+        .da-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 22px 24px 60px;
+        }
+
+        .da-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .da-add-btn {
+            background: var(--dh-basil);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+        .da-saved-flag {
+            font-size: 12.5px;
+            color: var(--dh-basil);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .da-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .da-card {
+            background: var(--dh-mozz);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 6px 16px rgba(33, 23, 18, 0.08);
+        }
+        .da-card-top {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .da-card-img {
+            width: 84px;
+            height: 84px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--dh-line);
+        }
+        .da-card-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .da-field label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(33, 23, 18, 0.55);
+            margin: 10px 0 4px;
+        }
+        .da-field input,
+        .da-field textarea,
+        .da-field select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1.5px solid var(--dh-line);
+            font-size: 13.5px;
+            font-family: 'Karla', sans-serif;
+        }
+        .da-field input:focus,
+        .da-field textarea:focus,
+        .da-field select:focus {
+            outline: 2px solid var(--dh-tomato);
+            border-color: var(--dh-tomato);
+        }
+        .da-row2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .da-card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+        }
+        .da-avail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+        .da-delete-btn {
+            background: transparent;
+            border: 1.5px solid var(--dh-tomato);
+            color: var(--dh-tomato-dark);
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .da-delete-btn:hover {
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+        }
+
+        .da-file-btn {
+            font-size: 11.5px;
+            color: var(--dh-tomato-dark);
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        /* pedidos */
+        .da-pedido {
+            background: var(--dh-mozz);
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 16px rgba(33, 23, 18, 0.08);
+        }
+        .da-pedido-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .da-pedido-cliente {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .da-pedido-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 11.5px;
+            color: rgba(33, 23, 18, 0.55);
+        }
+        .da-pedido-items {
+            font-size: 13.5px;
+            margin: 8px 0;
+            color: rgba(33, 23, 18, 0.8);
+        }
+        .da-pedido-total {
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+        }
+        .da-pedido-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .da-estado-select {
+            padding: 7px 10px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-line);
+            font-size: 12.5px;
+        }
+        .da-empty {
+            text-align: center;
+            padding: 60px 10px;
+            color: rgba(33, 23, 18, 0.55);
+        }
+        .da-refresh-btn {
+            background: transparent;
+            border: 1.5px solid var(--dh-char);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        .da-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="adminApp">
+        <!-- Login -->
+        <div id="loginWrap" class="da-login-wrap">
+            <form class="da-login-card" onsubmit="intentarLogin(event)">
+                <h1>Panel de Don Horno</h1>
+                <p>Ingresá la clave de administración para gestionar el menú y los pedidos.</p>
+                <input type="password" id="claveInput" placeholder="Clave" autofocus />
+                <div id="loginError" class="da-login-error da-hidden">Clave incorrecta, probá de nuevo.</div>
+                <button class="da-login-btn" type="submit">Entrar</button>
+            </form>
+        </div>
+
+        <!-- Panel Admin (oculto por defecto) -->
+        <div id="adminPanel" class="da-hidden">
+            <div class="da-header">
+                <h1>Don Horno · Administración</h1>
+                <span>Panel interno</span>
+            </div>
+
+            <div class="da-tabs">
+                <button class="da-tab active" data-tab="menu" onclick="cambiarTab('menu')">Menú</button>
+                <button class="da-tab" data-tab="pedidos" onclick="cambiarTab('pedidos')">Pedidos <span id="pedidosCount"></span></button>
+            </div>
+
+            <div class="da-content">
+                <!-- Tab Menú -->
+                <div id="tabMenu">
+                    <div class="da-toolbar">
+                        <button class="da-add-btn" onclick="agregarPizza()">+ Agregar pizza</button>
+                        <span id="guardadoOk" class="da-saved-flag da-hidden">✓ Guardado</span>
+                    </div>
+                    <div class="da-grid" id="menuGridAdmin"></div>
+                </div>
+
+                <!-- Tab Pedidos -->
+                <div id="tabPedidos" class="da-hidden">
+                    <div class="da-toolbar">
+                        <span class="da-saved-flag" id="pedidosInfo"></span>
+                        <button class="da-refresh-btn" onclick="cargarPedidos()">⟳ Actualizar</button>
+                    </div>
+                    <div id="pedidosList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURACIÓN
+        // ============================================================
+        const ADMIN_PASSWORD = "donhorno2026"; // <-- Cambiar por tu contraseña
+        const MENU_KEY = "dh_menu";
+        const PEDIDOS_KEY = "dh_pedidos";
+
+        const MENU_POR_DEFECTO = [{
+            id: "m1",
+            nombre: "Muzzarella",
+            descripcion: "Salsa de tomate, muzzarella y orégano.",
+            precio: 8500,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1548365328-9f547fb0953e?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }, {
+            id: "m2",
+            nombre: "Napolitana",
+            descripcion: "Muzzarella, tomate en rodajas, ajo y albahaca fresca.",
+            precio: 9800,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop",
+            disponible: true
+        }];
+
+        // ============================================================
+        // ESTADO GLOBAL
+        // ============================================================
+        let autenticado = false;
+        let tabActual = "menu";
+        let menu = [...MENU_POR_DEFECTO];
+        let pedidos = [];
+        let guardadoOkTimeout = null;
+
+        // ============================================================
+        // FUNCIONES AUXILIARES
+        // ============================================================
+        function formatARS(n) {
+            return Number(n || 0).toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                maximumFractionDigits: 0
+            });
+        }
+
+        function nuevoId() {
+            return `m_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        }
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        function intentarLogin(e) {
+            e.preventDefault();
+            const clave = document.getElementById('claveInput').value;
+            if (clave === ADMIN_PASSWORD) {
+                autenticado = true;
+                document.getElementById('loginWrap').style.display = 'none';
+                document.getElementById('adminPanel').classList.remove('da-hidden');
+                cargarMenuAdmin();
+                cargarPedidos();
+            } else {
+                document.getElementById('loginError').classList.remove('da-hidden');
+            }
+        }
+
+        // ============================================================
+        // TABS
+        // ============================================================
+        function cambiarTab(tab) {
+            tabActual = tab;
+            document.querySelectorAll('.da-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+            document.getElementById('tabMenu').classList.toggle('da-hidden', tab !== 'menu');
+            document.getElementById('tabPedidos').classList.toggle('da-hidden', tab !== 'pedidos');
+            if (tab === 'pedidos') cargarPedidos();
+        }
+
+        // ============================================================
+        // MENÚ - CARGAR
+        // ============================================================
+        function cargarMenuAdmin() {
+            try {
+                const raw = localStorage.getItem(MENU_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length) {
+                        menu = parsed;
+                    }
+                }
+            } catch (e) {}
+            renderizarMenuAdmin();
+        }
+
+        // ============================================================
+        // MENÚ - RENDERIZAR
+        // ============================================================
+        function renderizarMenuAdmin() {
+            const grid = document.getElementById('menuGridAdmin');
+            if (menu.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:rgba(33,23,18,0.6);">No hay pizzas en el menú. Agregá una.</p>';
+                return;
+            }
+
+            grid.innerHTML = menu.map(p => `
+                <div class="da-card" data-id="${p.id}">
+                    <div class="da-card-top">
+                        <img class="da-card-img" src="${p.imagen}" alt="${p.nombre}" />
+                        <div class="da-card-fields">
+                            <div class="da-field">
+                                <label>Nombre</label>
+                                <input value="${p.nombre}" onchange="actualizarPizza('${p.id}', 'nombre', this.value)" />
+                            </div>
+                            <label class="da-file-btn">
+                                Subir imagen
+                                <input type="file" accept="image/*" style="display:none" onchange="subirImagen('${p.id}', this.files[0])" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="da-field">
+                        <label>URL de imagen</label>
+                        <input value="${p.imagen}" onchange="actualizarPizza('${p.id}', 'imagen', this.value)" />
+                    </div>
+
+                    <div class="da-field">
+                        <label>Descripción</label>
+                        <textarea rows="2" onchange="actualizarPizza('${p.id}', 'descripcion', this.value)">${p.descripcion}</textarea>
+                    </div>
+
+                    <div class="da-row2">
+                        <div class="da-field">
+                            <label>Precio (ARS)</label>
+                            <input type="number" value="${p.precio}" onchange="actualizarPizza('${p.id}', 'precio', Number(this.value))" />
+                        </div>
+                        <div class="da-field">
+                            <label>Categoría</label>
+                            <select onchange="actualizarPizza('${p.id}', 'categoria', this.value)">
+                                <option value="cocida" ${p.categoria === 'cocida' ? 'selected' : ''}>Recién horneada</option>
+                                <option value="lista" ${p.categoria === 'lista' ? 'selected' : ''}>Para hornear en casa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="da-card-foot">
+                        <label class="da-avail">
+                            <input type="checkbox" ${p.disponible !== false ? 'checked' : ''} onchange="actualizarPizza('${p.id}', 'disponible', this.checked)" />
+                            Disponible
+                        </label>
+                        <button class="da-delete-btn" onclick="eliminarPizza('${p.id}')">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // MENÚ - CRUD
+        // ============================================================
+        function guardarMenu(nuevoMenu) {
+            menu = nuevoMenu;
+            try {
+                localStorage.setItem(MENU_KEY, JSON.stringify(nuevoMenu));
+                mostrarGuardadoOk();
+            } catch (e) {}
+            renderizarMenuAdmin();
+        }
+
+        function mostrarGuardadoOk() {
+            const el = document.getElementById('guardadoOk');
+            el.classList.remove('da-hidden');
+            clearTimeout(guardadoOkTimeout);
+            guardadoOkTimeout = setTimeout(() => el.classList.add('da-hidden'), 1800);
+        }
+
+        function actualizarPizza(id, campo, valor) {
+            const nuevoMenu = menu.map(p => p.id === id ? { ...p, [campo]: valor } : p);
+            guardarMenu(nuevoMenu);
+        }
+
+        function eliminarPizza(id) {
+            if (!confirm('¿Eliminar esta pizza del menú?')) return;
+            guardarMenu(menu.filter(p => p.id !== id));
+        }
+
+        function agregarPizza() {
+            const nueva = {
+                id: nuevoId(),
+                nombre: "Nueva pizza",
+                descripcion: "Descripción breve de la pizza.",
+                precio: 9000,
+                categoria: "cocida",
+                imagen: "https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?q=80&w=800&auto=format&fit=crop",
+                disponible: true
+            };
+            guardarMenu([nueva, ...menu]);
+        }
+
+        function subirImagen(id, file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => actualizarPizza(id, "imagen", reader.result);
+            reader.readAsDataURL(file);
+        }
+
+        // ============================================================
+        // PEDIDOS
+        // ============================================================
+        function cargarPedidos() {
+            try {
+                const raw = localStorage.getItem(PEDIDOS_KEY);
+                pedidos = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                pedidos = [];
+            }
+            renderizarPedidos();
+        }
+
+        function renderizarPedidos() {
+            const list = document.getElementById('pedidosList');
+            const info = document.getElementById('pedidosInfo');
+            const count = document.getElementById('pedidosCount');
+
+            count.textContent = pedidos.length > 0 ? `(${pedidos.length})` : '';
+            info.textContent = `${pedidos.length} pedido${pedidos.length === 1 ? '' : 's'} guardado${pedidos.length === 1 ? '' : 's'}`;
+
+            if (pedidos.length === 0) {
+                list.innerHTML = `<div class="da-empty">Todavía no llegó ningún pedido desde la página principal.</div>`;
+                return;
+            }
+
+            list.innerHTML = pedidos.map(pedido => `
+                <div class="da-pedido">
+                    <div class="da-pedido-top">
+                        <div>
+                            <div class="da-pedido-cliente">${pedido.cliente?.nombre || 'Sin nombre'}</div>
+                            <div class="da-pedido-meta">
+                                ${new Date(pedido.fecha).toLocaleString('es-AR')} · Tel: ${pedido.cliente?.telefono || ''} · Pago: ${
+                                    {efectivo: 'Efectivo', transferencia: 'Transferencia', tarjeta: 'Tarjeta'}[pedido.cliente?.pago] || pedido.cliente?.pago || ''
+                                }
+                            </div>
+                            <div class="da-pedido-meta">
+                                Dirección: ${pedido.cliente?.direccion || ''}
+                                ${pedido.cliente?.referencias ? ` · ${pedido.cliente.referencias}` : ''}
+                            </div>
+                        </div>
+                        <div class="da-pedido-total">${formatARS(pedido.total)}</div>
+                    </div>
+
+                    <div class="da-pedido-items">
+                        ${pedido.items?.map(it => `
+                            <div>${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}</div>
+                        `).join('') || 'Sin items'}
+                    </div>
+
+                    <div class="da-pedido-actions">
+                        <select class="da-estado-select" onchange="cambiarEstadoPedido('${pedido.id}', this.value)">
+                            <option value="Nuevo" ${pedido.estado === 'Nuevo' ? 'selected' : ''}>Nuevo</option>
+                            <option value="En preparación" ${pedido.estado === 'En preparación' ? 'selected' : ''}>En preparación</option>
+                            <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>En camino</option>
+                            <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                        </select>
+                        <button class="da-delete-btn" onclick="eliminarPedido('${pedido.id}')">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function cambiarEstadoPedido(id, estado) {
+            const nuevos = pedidos.map(p => p.id === id ? { ...p, estado } : p);
+            pedidos = nuevos;
+            try {
+                localStorage.setItem(PEDIDOS_KEY, JSON.stringify(nuevos));
+            } catch (e) {}
+            renderizarPedidos();
+        }
+
+        function eliminarPedido(id) {
+            if (!confirm('¿Eliminar este pedido?')) return;
+            pedidos = pedidos.filter(p => p.id !== id);
+            try {
+                localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidos));
+            } catch (e) {}
+            renderizarPedidos();
+        }
+
+        // ============================================================
+        // INICIALIZAR
+        // ============================================================
+        // El login se muestra por defecto, el panel está oculto
+    </script>
+</body>
+</html>
