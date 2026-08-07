@@ -614,7 +614,7 @@
         <!-- top bar -->
         <div class="dh-topbar">
             <div class="dh-brand">
-                <span class="dh-brand-name">Don Horno</span>
+                <span class="dh-brand-name">PizzasFedeBar</span>
             </div>
             <button class="dh-cart-btn" onclick="toggleCart()">
                 Mi pedido
@@ -630,11 +630,11 @@
                     Delivery sin cargo
                 </span>
                 <h1 class="dh-display">
-                    Pizza a la leña, <span>directo a tu puerta</span>
+                    El antojo llama..., <span>nosotros llevamos la pizza</span>
                 </h1>
                 <p>
                     Elegí tus pizzas favoritas, recién horneadas para comer ya o listas para
-                    hornear en casa. Te las llevamos sin costo de envío.
+                    hornear en casa. Te las llevamos sin costo de envío a tu Domicilio.
                 </p>
                 <div class="dh-hero-ctas">
                     <button class="dh-btn-primary" onclick="document.getElementById('dh-menu').scrollIntoView({ behavior: 'smooth' })">
@@ -651,7 +651,7 @@
         <div class="dh-strip">
             <div class="dh-strip-item">
                 <h4>Delivery gratis</h4>
-                <p>Sin costo de envío en toda la zona de reparto.</p>
+                <p>Sin costo de envío en toda la zona de reparto (Abra Pampa).</p>
             </div>
             <div class="dh-strip-item">
                 <h4>Recién horneada o para hornear</h4>
@@ -659,7 +659,7 @@
             </div>
             <div class="dh-strip-item">
                 <h4>Pago como prefieras</h4>
-                <p>Efectivo, transferencia o tarjeta al recibir el pedido.</p>
+                <p>Efectivo y transferencia.</p>
             </div>
         </div>
 
@@ -710,57 +710,25 @@
         // ============================================================
         // CONFIGURACIÓN
         // ============================================================
-        const WHATSAPP_NUMBER = "5493880000000"; // <-- Reemplazar con tu número
+        const WHATSAPP_NUMBER = "+5493883143816"; // <-- Reemplazar con tu número
         const MENU_KEY = "dh_menu";
         const PEDIDOS_KEY = "dh_pedidos";
 
         const MENU_POR_DEFECTO = [{
             id: "m1",
-            nombre: "Muzzarella",
-            descripcion: "Salsa de tomate, muzzarella y orégano.",
-            precio: 8500,
+            nombre: "Pizza Común ",
+            descripcion: "Salsa de tomate, queso y orégano.",
+            precio: 7500,
             categoria: "cocida",
-            imagen: "https://images.unsplash.com/photo-1548365328-9f547fb0953e?q=80&w=800&auto=format&fit=crop",
+            imagen: "https://drive.google.com/file/d/1ReF-8bj2IL1oeReo4si6Ope0TQXr2IvL/view?usp=drive_link",
             disponible: true
         }, {
             id: "m2",
             nombre: "Napolitana",
-            descripcion: "Muzzarella, tomate en rodajas, ajo y albahaca fresca.",
-            precio: 9800,
+            descripcion: "Queso,Jamon,Aceitunas,Tomate en rodajas,Salsa de Tomate, Oregano.",
+            precio: 8500,
             categoria: "cocida",
-            imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop",
-            disponible: true
-        }, {
-            id: "m3",
-            nombre: "Fugazzeta",
-            descripcion: "Doble muzzarella y cebolla a la parrilla.",
-            precio: 9200,
-            categoria: "lista",
-            imagen: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=800&auto=format&fit=crop",
-            disponible: true
-        }, {
-            id: "m4",
-            nombre: "Especial",
-            descripcion: "Muzzarella, jamón cocido y morrones asados.",
-            precio: 10500,
-            categoria: "lista",
-            imagen: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
-            disponible: true
-        }, {
-            id: "m5",
-            nombre: "Cuatro Quesos",
-            descripcion: "Muzzarella, provolone, roquefort y parmesano.",
-            precio: 11200,
-            categoria: "lista",
-            imagen: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop",
-            disponible: true
-        }, {
-            id: "m6",
-            nombre: "Calabresa",
-            descripcion: "Muzzarella, longaniza calabresa y morrones.",
-            precio: 10200,
-            categoria: "cocida",
-            imagen: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop",
+            imagen: "https://drive.google.com/file/d/1r3Lu8OhKFcJtM8Fh3GGxXdvReeyJvHYv/view?usp=drive_link",
             disponible: true
         }];
 
@@ -1071,7 +1039,7 @@
             } [datosCliente.pago];
 
             const mensaje =
-                `*Pedido Don Horno*%0A%0A` +
+                `*Pedido PizzaFedeBar*%0A%0A` +
                 `${lineas}%0A%0A` +
                 `*Total: ${formatARS(total)}*%0A%0A` +
                 `*Nombre:* ${encodeURIComponent(datosCliente.nombre)}%0A` +
