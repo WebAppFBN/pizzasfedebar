@@ -6,6 +6,7 @@
     <title>PizzaFedeBar - Administración</title>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900&family=Karla:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <style>
+        /* ===== TODOS LOS ESTILOS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -121,6 +122,7 @@
             padding: 20px 24px 0;
             max-width: 1100px;
             margin: 0 auto;
+            flex-wrap: wrap;
         }
         .da-tab {
             border: 1.5px solid var(--dh-char);
@@ -322,6 +324,13 @@
             font-size: 11.5px;
             color: rgba(33, 23, 18, 0.55);
         }
+        .da-pedido-meta a {
+            color: var(--dh-tomato);
+            text-decoration: none;
+        }
+        .da-pedido-meta a:hover {
+            text-decoration: underline;
+        }
         .da-pedido-items {
             font-size: 13.5px;
             margin: 8px 0;
@@ -363,8 +372,144 @@
             color: var(--dh-semolina);
         }
 
+        /* configuracion */
+        .da-config-section {
+            background: var(--dh-mozz);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 16px rgba(33, 23, 18, 0.08);
+        }
+        .da-config-section h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--dh-char);
+        }
+        .da-config-section .da-sub {
+            font-size: 13px;
+            color: rgba(33, 23, 18, 0.6);
+            margin-bottom: 16px;
+        }
+        .da-config-section label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(33, 23, 18, 0.55);
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+        .da-config-section textarea,
+        .da-config-section input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-line);
+            font-size: 13.5px;
+            font-family: 'Karla', sans-serif;
+            resize: vertical;
+        }
+        .da-config-section textarea:focus,
+        .da-config-section input:focus {
+            outline: 2px solid var(--dh-tomato);
+            border-color: var(--dh-tomato);
+        }
+        .da-config-section .da-help {
+            font-size: 12px;
+            color: rgba(33, 23, 18, 0.5);
+            margin-top: 4px;
+        }
+        .da-config-section .da-help code {
+            background: var(--dh-semolina);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-family: 'Space Mono', monospace;
+        }
+        .da-config-save {
+            background: var(--dh-basil);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13.5px;
+            margin-top: 16px;
+        }
+        .da-config-save:hover {
+            filter: brightness(1.1);
+        }
+        .da-config-preview {
+            background: var(--dh-semolina);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-top: 10px;
+            font-size: 13px;
+            white-space: pre-wrap;
+            border: 1px dashed var(--dh-line);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .da-config-preview strong {
+            color: var(--dh-tomato);
+        }
+        .da-config-toggle {
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .da-config-toggle:hover {
+            background: var(--dh-tomato-dark);
+        }
+        .da-campos-lista {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .da-campo-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--dh-semolina);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: move;
+            border: 1px solid var(--dh-line);
+        }
+        .da-campo-item:hover {
+            border-color: var(--dh-tomato);
+        }
+        .da-campo-item .da-drag {
+            cursor: grab;
+            color: rgba(33, 23, 18, 0.3);
+        }
+        .da-campo-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        .da-campo-item label {
+            margin: 0;
+            font-size: 12px;
+            text-transform: none;
+            font-family: 'Karla', sans-serif;
+            color: var(--dh-char);
+        }
+
         @media (max-width: 640px) {
             .da-row2 {
+                grid-template-columns: 1fr;
+            }
+            .da-campos-lista {
                 grid-template-columns: 1fr;
             }
             .da-toolbar {
@@ -387,8 +532,8 @@
         <!-- Login -->
         <div id="loginWrap" class="da-login-wrap">
             <form class="da-login-card" onsubmit="intentarLogin(event)">
-                <h1>Panel de PizzaFedeBar</h1>
-                <p>Ingresá la clave de administración para gestionar el menú y los pedidos.</p>
+                <h1>🍕 Panel de PizzaFedeBar</h1>
+                <p>Ingresá la clave de administración para gestionar el menú, los pedidos y la configuración.</p>
                 <input type="password" id="claveInput" placeholder="Clave" autofocus />
                 <div id="loginError" class="da-login-error da-hidden">Clave incorrecta, probá de nuevo.</div>
                 <button class="da-login-btn" type="submit">Entrar</button>
@@ -405,6 +550,7 @@
             <div class="da-tabs">
                 <button class="da-tab active" data-tab="menu" onclick="cambiarTab('menu')">📋 Menú</button>
                 <button class="da-tab" data-tab="pedidos" onclick="cambiarTab('pedidos')">📦 Pedidos <span id="pedidosCount"></span></button>
+                <button class="da-tab" data-tab="config" onclick="cambiarTab('config')">⚙️ Configuración</button>
             </div>
 
             <div class="da-content">
@@ -428,6 +574,46 @@
                     </div>
                     <div id="pedidosList"></div>
                 </div>
+
+                <!-- Tab Configuración -->
+                <div id="tabConfig" class="da-hidden">
+                    <div class="da-config-section">
+                        <h3>📝 Mensaje de Bienvenida</h3>
+                        <p class="da-sub">Este mensaje se muestra en el hero de la página principal.</p>
+                        
+                        <label>Título principal</label>
+                        <input type="text" id="configTitulo" placeholder="Ej: El antojo llama..." />
+                        
+                        <label>Subtítulo / Descripción</label>
+                        <textarea rows="3" id="configSubtitulo" placeholder="Descripción que aparece debajo del título..."></textarea>
+                        
+                        <label>Texto del badge (etiqueta superior)</label>
+                        <input type="text" id="configBadge" placeholder="Ej: Delivery sin cargo" />
+                        
+                        <button class="da-config-save" onclick="guardarConfiguracion()">💾 Guardar configuración</button>
+                        <span id="configGuardadoOk" class="da-saved-flag da-hidden" style="margin-left:12px;">✓ Guardado</span>
+                    </div>
+
+                    <div class="da-config-section">
+                        <h3>📋 Estructura del Mensaje de Pedido</h3>
+                        <p class="da-sub">Personalizá el orden y los campos que aparecen en el mensaje de WhatsApp.</p>
+                        
+                        <label>Campos del mensaje (orden arrastrable)</label>
+                        <div class="da-campos-lista" id="camposLista"></div>
+                        
+                        <label>Texto adicional al final del mensaje</label>
+                        <textarea rows="3" id="configMensajeFinal" placeholder="Ej: ¡Gracias por tu pedido!..."></textarea>
+                        
+                        <button class="da-config-save" onclick="guardarConfiguracion()">💾 Guardar configuración</button>
+                        <span id="configGuardadoOk2" class="da-saved-flag da-hidden" style="margin-left:12px;">✓ Guardado</span>
+                    </div>
+
+                    <div class="da-config-section">
+                        <h3>👁️ Vista previa del mensaje</h3>
+                        <button class="da-config-toggle" onclick="mostrarVistaPrevia()">🔍 Ver vista previa</button>
+                        <div id="vistaPrevia" class="da-config-preview" style="display:none;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -436,9 +622,10 @@
         // ============================================================
         // CONFIGURACIÓN
         // ============================================================
-        const ADMIN_PASSWORD = "PizzaFedeBar2026"; // <-- Cambiar por tu contraseña
+        const ADMIN_PASSWORD = "PizzaFedeBar2026";
         const MENU_KEY = "dh_menu";
         const PEDIDOS_KEY = "dh_pedidos";
+        const CONFIG_KEY = "dh_configuracion";
 
         const MENU_POR_DEFECTO = [{
             id: "m1",
@@ -502,6 +689,25 @@
             vendidasHoy: 0
         }];
 
+        const CAMPOS_POR_DEFECTO = [
+            { id: 'nombre', label: '👤 Nombre', activo: true },
+            { id: 'telefono', label: '📱 Teléfono', activo: true },
+            { id: 'direccion', label: '📍 Dirección', activo: true },
+            { id: 'referencias', label: '📝 Referencias', activo: true },
+            { id: 'ubicacion', label: '🗺️ Ubicación Google Maps', activo: true },
+            { id: 'pago', label: '💳 Método de pago', activo: true },
+            { id: 'items', label: '🍕 Items del pedido', activo: true },
+            { id: 'total', label: '💰 Total', activo: true }
+        ];
+
+        let configuracion = {
+            titulo: 'El antojo llama..., nosotros llevamos la pizza',
+            subtitulo: 'Elegí tus pizzas favoritas, recién horneadas para comer ya o listas para hornear en casa. Te las llevamos sin costo de envío a tu Domicilio.',
+            badge: 'Delivery sin cargo',
+            campos: JSON.parse(JSON.stringify(CAMPOS_POR_DEFECTO)),
+            mensajeFinal: '¡Gracias por tu pedido! 🍕'
+        };
+
         // ============================================================
         // ESTADO GLOBAL
         // ============================================================
@@ -538,6 +744,7 @@
                 document.getElementById('adminPanel').classList.remove('da-hidden');
                 cargarMenuAdmin();
                 cargarPedidos();
+                cargarConfiguracionAdmin();
             } else {
                 document.getElementById('loginError').classList.remove('da-hidden');
                 setTimeout(() => {
@@ -556,7 +763,12 @@
             });
             document.getElementById('tabMenu').classList.toggle('da-hidden', tab !== 'menu');
             document.getElementById('tabPedidos').classList.toggle('da-hidden', tab !== 'pedidos');
+            document.getElementById('tabConfig').classList.toggle('da-hidden', tab !== 'config');
             if (tab === 'pedidos') cargarPedidos();
+            if (tab === 'config') {
+                cargarConfiguracionAdmin();
+                setTimeout(mostrarVistaPrevia, 300);
+            }
         }
 
         // ============================================================
@@ -590,7 +802,6 @@
                 }
             } catch (e) {}
             
-            // Si no hay datos, usar menú por defecto
             menu = JSON.parse(JSON.stringify(MENU_POR_DEFECTO));
             try {
                 localStorage.setItem(MENU_KEY, JSON.stringify(menu));
@@ -653,7 +864,6 @@
                         </div>
                     </div>
 
-                    <!-- NUEVO: Campos de límite diario -->
                     <div class="da-row2">
                         <div class="da-field">
                             <label>Límite diario (0 = sin límite)</label>
@@ -757,7 +967,7 @@
             info.textContent = `${pedidos.length} pedido${pedidos.length === 1 ? '' : 's'} guardado${pedidos.length === 1 ? '' : 's'}`;
 
             if (pedidos.length === 0) {
-                list.innerHTML = `<div class="da-empty">📭 Todavía no llegó ningún pedido desde la página principal.</div>`;
+                list.innerHTML = `<div class="da-empty">📭 Todavía no llegó ningún pedido.</div>`;
                 return;
             }
 
@@ -775,6 +985,13 @@
                                 📍 Dirección: ${pedido.cliente?.direccion || ''}
                                 ${pedido.cliente?.referencias ? ` · 📝 ${pedido.cliente.referencias}` : ''}
                             </div>
+                            ${pedido.cliente?.ubicacion ? `
+                                <div class="da-pedido-meta">
+                                    🗺️ <a href="${pedido.cliente.ubicacion}" target="_blank">
+                                        Ver ubicación en Google Maps
+                                    </a>
+                                </div>
+                            ` : ''}
                         </div>
                         <div class="da-pedido-total">${formatARS(pedido.total)}</div>
                     </div>
@@ -817,9 +1034,153 @@
         }
 
         // ============================================================
+        // CONFIGURACIÓN
+        // ============================================================
+        function cargarConfiguracionAdmin() {
+            try {
+                const raw = localStorage.getItem(CONFIG_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    configuracion = { ...configuracion, ...data };
+                }
+            } catch (e) {}
+            
+            document.getElementById('configTitulo').value = configuracion.titulo || '';
+            document.getElementById('configSubtitulo').value = configuracion.subtitulo || '';
+            document.getElementById('configBadge').value = configuracion.badge || '';
+            document.getElementById('configMensajeFinal').value = configuracion.mensajeFinal || '';
+            
+            renderizarCampos();
+        }
+
+        function renderizarCampos() {
+            const container = document.getElementById('camposLista');
+            container.innerHTML = '';
+            
+            configuracion.campos.forEach((campo, index) => {
+                const div = document.createElement('div');
+                div.className = 'da-campo-item';
+                div.draggable = true;
+                div.dataset.index = index;
+                
+                div.innerHTML = `
+                    <span class="da-drag">⠿</span>
+                    <input type="checkbox" ${campo.activo ? 'checked' : ''} 
+                           onchange="toggleCampo(${index}, this.checked)" />
+                    <label>${campo.label}</label>
+                `;
+                
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', index);
+                });
+                
+                div.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                div.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toIndex = parseInt(div.dataset.index);
+                    if (fromIndex !== toIndex) {
+                        reordenarCampos(fromIndex, toIndex);
+                    }
+                });
+                
+                container.appendChild(div);
+            });
+        }
+
+        function toggleCampo(index, activo) {
+            configuracion.campos[index].activo = activo;
+            guardarConfiguracion();
+        }
+
+        function reordenarCampos(from, to) {
+            const item = configuracion.campos.splice(from, 1)[0];
+            configuracion.campos.splice(to, 0, item);
+            guardarConfiguracion();
+            renderizarCampos();
+        }
+
+        function guardarConfiguracion() {
+            const titulo = document.getElementById('configTitulo').value;
+            const subtitulo = document.getElementById('configSubtitulo').value;
+            const badge = document.getElementById('configBadge').value;
+            const mensajeFinal = document.getElementById('configMensajeFinal').value;
+            
+            configuracion = {
+                ...configuracion,
+                titulo,
+                subtitulo,
+                badge,
+                mensajeFinal
+            };
+            
+            try {
+                localStorage.setItem(CONFIG_KEY, JSON.stringify(configuracion));
+                mostrarConfigGuardado();
+                mostrarVistaPrevia();
+            } catch (e) {}
+        }
+
+        function mostrarConfigGuardado() {
+            ['configGuardadoOk', 'configGuardadoOk2'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.remove('da-hidden');
+                    setTimeout(() => el.classList.add('da-hidden'), 1800);
+                }
+            });
+        }
+
+        function mostrarVistaPrevia() {
+            const preview = document.getElementById('vistaPrevia');
+            preview.style.display = 'block';
+            
+            const camposActivos = configuracion.campos.filter(c => c.activo);
+            
+            let mensaje = `*🍕 Pedido PizzaFedeBar*\n\n`;
+            
+            if (camposActivos.some(c => c.id === 'items')) {
+                mensaje += `• 2x Pizza Común — $15,000\n`;
+                mensaje += `• 1x Napolitana — $8,500\n\n`;
+            }
+            
+            if (camposActivos.some(c => c.id === 'total')) {
+                mensaje += `*💰 Total: $23,500*\n\n`;
+            }
+            
+            const ordenCampos = ['nombre', 'telefono', 'direccion', 'referencias', 'ubicacion', 'pago'];
+            const labels = {
+                nombre: '👤 Nombre',
+                telefono: '📱 Teléfono',
+                direccion: '📍 Dirección',
+                referencias: '📝 Referencias',
+                ubicacion: '🗺️ Google Maps',
+                pago: '💳 Pago'
+            };
+            
+            ordenCampos.forEach(id => {
+                const campo = camposActivos.find(c => c.id === id);
+                if (campo) {
+                    const valor = id === 'ubicacion' ? 'https://maps.google.com/...' : 
+                                id === 'pago' ? 'Efectivo' : 
+                                `[${campo.label}]`;
+                    mensaje += `*${labels[id] || campo.label}:* ${valor}\n`;
+                }
+            });
+            
+            if (configuracion.mensajeFinal) {
+                mensaje += `\n${configuracion.mensajeFinal}`;
+            }
+            
+            preview.textContent = mensaje;
+        }
+
+        // ============================================================
         // INICIALIZAR
         // ============================================================
-        // El login se muestra por defecto, el panel está oculto
         console.log('🍕 PizzaFedeBar Admin Panel cargado');
         console.log('🔑 Contraseña:', ADMIN_PASSWORD);
     </script>
