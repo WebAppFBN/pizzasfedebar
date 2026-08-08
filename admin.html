@@ -88,6 +88,9 @@
             font-size: 12.5px;
             margin: -4px 0 12px;
         }
+        .da-hidden {
+            display: none;
+        }
 
         /* header */
         .da-header {
@@ -158,6 +161,23 @@
             cursor: pointer;
             font-size: 13.5px;
         }
+        .da-add-btn:hover {
+            filter: brightness(1.1);
+        }
+        .da-reset-btn {
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13.5px;
+            margin-left: 10px;
+        }
+        .da-reset-btn:hover {
+            background: var(--dh-tomato-dark);
+        }
         .da-saved-flag {
             font-size: 12.5px;
             color: var(--dh-basil);
@@ -166,7 +186,7 @@
 
         .da-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
         .da-card {
@@ -224,6 +244,20 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+        }
+        .da-stock-info {
+            display: block;
+            padding: 8px 10px;
+            background: #f4e8cf;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .da-stock-info.limite {
+            color: var(--dh-tomato-dark);
+        }
+        .da-stock-info.sin-limite {
+            color: var(--dh-basil);
         }
 
         .da-card-foot {
@@ -324,9 +358,27 @@
             font-size: 12.5px;
             font-weight: 700;
         }
+        .da-refresh-btn:hover {
+            background: var(--dh-char);
+            color: var(--dh-semolina);
+        }
 
-        .da-hidden {
-            display: none;
+        @media (max-width: 640px) {
+            .da-row2 {
+                grid-template-columns: 1fr;
+            }
+            .da-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .da-toolbar div {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .da-reset-btn {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -346,20 +398,23 @@
         <!-- Panel Admin (oculto por defecto) -->
         <div id="adminPanel" class="da-hidden">
             <div class="da-header">
-                <h1>Don Horno · Administración</h1>
+                <h1>🍕 PizzaFedeBar · Administración</h1>
                 <span>Panel interno</span>
             </div>
 
             <div class="da-tabs">
-                <button class="da-tab active" data-tab="menu" onclick="cambiarTab('menu')">Menú</button>
-                <button class="da-tab" data-tab="pedidos" onclick="cambiarTab('pedidos')">Pedidos <span id="pedidosCount"></span></button>
+                <button class="da-tab active" data-tab="menu" onclick="cambiarTab('menu')">📋 Menú</button>
+                <button class="da-tab" data-tab="pedidos" onclick="cambiarTab('pedidos')">📦 Pedidos <span id="pedidosCount"></span></button>
             </div>
 
             <div class="da-content">
                 <!-- Tab Menú -->
                 <div id="tabMenu">
                     <div class="da-toolbar">
-                        <button class="da-add-btn" onclick="agregarPizza()">+ Agregar pizza</button>
+                        <div>
+                            <button class="da-add-btn" onclick="agregarPizza()">➕ Agregar pizza</button>
+                            <button class="da-reset-btn" onclick="resetearVentas()">🔄 Resetear ventas diarias</button>
+                        </div>
                         <span id="guardadoOk" class="da-saved-flag da-hidden">✓ Guardado</span>
                     </div>
                     <div class="da-grid" id="menuGridAdmin"></div>
@@ -387,20 +442,64 @@
 
         const MENU_POR_DEFECTO = [{
             id: "m1",
-            nombre: "Muzzarella",
-            descripcion: "Salsa de tomate, muzzarella y orégano.",
-            precio: 8500,
+            nombre: "Pizza Común",
+            descripcion: "Salsa de tomate, queso y orégano.",
+            precio: 7500,
             categoria: "cocida",
             imagen: "https://images.unsplash.com/photo-1548365328-9f547fb0953e?q=80&w=800&auto=format&fit=crop",
-            disponible: true
+            disponible: true,
+            limiteDiario: 20,
+            vendidasHoy: 0
         }, {
             id: "m2",
             nombre: "Napolitana",
-            descripcion: "Muzzarella, tomate en rodajas, ajo y albahaca fresca.",
-            precio: 9800,
+            descripcion: "Queso, Jamón, Aceitunas, Tomate en rodajas, Salsa de Tomate, Orégano.",
+            precio: 8500,
             categoria: "cocida",
             imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop",
-            disponible: true
+            disponible: true,
+            limiteDiario: 15,
+            vendidasHoy: 0
+        }, {
+            id: "m3",
+            nombre: "Fugazzeta",
+            descripcion: "Doble queso y cebolla a la parrilla.",
+            precio: 9200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 10,
+            vendidasHoy: 0
+        }, {
+            id: "m4",
+            nombre: "Especial",
+            descripcion: "Queso, jamón cocido y morrones asados.",
+            precio: 10500,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 12,
+            vendidasHoy: 0
+        }, {
+            id: "m5",
+            nombre: "Cuatro Quesos",
+            descripcion: "Muzzarella, provolone, roquefort y parmesano.",
+            precio: 11200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 8,
+            vendidasHoy: 0
+        }, {
+            id: "m6",
+            nombre: "Calabresa",
+            descripcion: "Muzzarella, longaniza calabresa y morrones.",
+            precio: 10200,
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 10,
+            vendidasHoy: 0
         }];
 
         // ============================================================
@@ -408,7 +507,7 @@
         // ============================================================
         let autenticado = false;
         let tabActual = "menu";
-        let menu = [...MENU_POR_DEFECTO];
+        let menu = [];
         let pedidos = [];
         let guardadoOkTimeout = null;
 
@@ -441,6 +540,9 @@
                 cargarPedidos();
             } else {
                 document.getElementById('loginError').classList.remove('da-hidden');
+                setTimeout(() => {
+                    document.getElementById('loginError').classList.add('da-hidden');
+                }, 3000);
             }
         }
 
@@ -458,6 +560,21 @@
         }
 
         // ============================================================
+        // RESETEO DE VENTAS
+        // ============================================================
+        function resetearVentas() {
+            if (!confirm('⚠️ ¿Resetear todas las ventas diarias?\nEsto pondrá a 0 las "vendidasHoy" de todas las pizzas.')) return;
+            
+            const nuevoMenu = menu.map(p => ({
+                ...p,
+                vendidasHoy: 0
+            }));
+            guardarMenu(nuevoMenu);
+            localStorage.setItem('dh_ultimo_reset', new Date().toDateString());
+            alert('✅ ¡Ventas diarias reseteadas correctamente!');
+        }
+
+        // ============================================================
         // MENÚ - CARGAR
         // ============================================================
         function cargarMenuAdmin() {
@@ -467,8 +584,16 @@
                     const parsed = JSON.parse(raw);
                     if (Array.isArray(parsed) && parsed.length) {
                         menu = parsed;
+                        renderizarMenuAdmin();
+                        return;
                     }
                 }
+            } catch (e) {}
+            
+            // Si no hay datos, usar menú por defecto
+            menu = JSON.parse(JSON.stringify(MENU_POR_DEFECTO));
+            try {
+                localStorage.setItem(MENU_KEY, JSON.stringify(menu));
             } catch (e) {}
             renderizarMenuAdmin();
         }
@@ -483,7 +608,12 @@
                 return;
             }
 
-            grid.innerHTML = menu.map(p => `
+            grid.innerHTML = menu.map(p => {
+                const vendidas = p.vendidasHoy || 0;
+                const limite = p.limiteDiario || 0;
+                const tieneLimite = limite > 0;
+                
+                return `
                 <div class="da-card" data-id="${p.id}">
                     <div class="da-card-top">
                         <img class="da-card-img" src="${p.imagen}" alt="${p.nombre}" />
@@ -493,7 +623,7 @@
                                 <input value="${p.nombre}" onchange="actualizarPizza('${p.id}', 'nombre', this.value)" />
                             </div>
                             <label class="da-file-btn">
-                                Subir imagen
+                                📷 Subir imagen
                                 <input type="file" accept="image/*" style="display:none" onchange="subirImagen('${p.id}', this.files[0])" />
                             </label>
                         </div>
@@ -523,15 +653,33 @@
                         </div>
                     </div>
 
+                    <!-- NUEVO: Campos de límite diario -->
+                    <div class="da-row2">
+                        <div class="da-field">
+                            <label>Límite diario (0 = sin límite)</label>
+                            <input type="number" min="0" value="${limite}" 
+                                   onchange="actualizarPizza('${p.id}', 'limiteDiario', Number(this.value))" />
+                        </div>
+                        <div class="da-field">
+                            <label>Vendidas hoy</label>
+                            <span class="da-stock-info ${tieneLimite ? 'limite' : 'sin-limite'}">
+                                ${vendidas} ${tieneLimite ? `/ ${limite}` : '(sin límite)'}
+                                ${tieneLimite && vendidas >= limite ? ' 🔴 AGOTADO' : ''}
+                                ${tieneLimite && vendidas > 0 && vendidas < limite ? ` 🟢 ${limite - vendidas} disponibles` : ''}
+                            </span>
+                        </div>
+                    </div>
+
                     <div class="da-card-foot">
                         <label class="da-avail">
-                            <input type="checkbox" ${p.disponible !== false ? 'checked' : ''} onchange="actualizarPizza('${p.id}', 'disponible', this.checked)" />
+                            <input type="checkbox" ${p.disponible !== false ? 'checked' : ''} 
+                                   onchange="actualizarPizza('${p.id}', 'disponible', this.checked)" />
                             Disponible
                         </label>
-                        <button class="da-delete-btn" onclick="eliminarPizza('${p.id}')">Eliminar</button>
+                        <button class="da-delete-btn" onclick="eliminarPizza('${p.id}')">🗑️ Eliminar</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // ============================================================
@@ -542,7 +690,9 @@
             try {
                 localStorage.setItem(MENU_KEY, JSON.stringify(nuevoMenu));
                 mostrarGuardadoOk();
-            } catch (e) {}
+            } catch (e) {
+                console.error('Error guardando menú:', e);
+            }
             renderizarMenuAdmin();
         }
 
@@ -571,7 +721,9 @@
                 precio: 9000,
                 categoria: "cocida",
                 imagen: "https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?q=80&w=800&auto=format&fit=crop",
-                disponible: true
+                disponible: true,
+                limiteDiario: 0,
+                vendidasHoy: 0
             };
             guardarMenu([nueva, ...menu]);
         }
@@ -605,7 +757,7 @@
             info.textContent = `${pedidos.length} pedido${pedidos.length === 1 ? '' : 's'} guardado${pedidos.length === 1 ? '' : 's'}`;
 
             if (pedidos.length === 0) {
-                list.innerHTML = `<div class="da-empty">Todavía no llegó ningún pedido desde la página principal.</div>`;
+                list.innerHTML = `<div class="da-empty">📭 Todavía no llegó ningún pedido desde la página principal.</div>`;
                 return;
             }
 
@@ -613,15 +765,15 @@
                 <div class="da-pedido">
                     <div class="da-pedido-top">
                         <div>
-                            <div class="da-pedido-cliente">${pedido.cliente?.nombre || 'Sin nombre'}</div>
+                            <div class="da-pedido-cliente">👤 ${pedido.cliente?.nombre || 'Sin nombre'}</div>
                             <div class="da-pedido-meta">
-                                ${new Date(pedido.fecha).toLocaleString('es-AR')} · Tel: ${pedido.cliente?.telefono || ''} · Pago: ${
+                                📅 ${new Date(pedido.fecha).toLocaleString('es-AR')} · 📱 Tel: ${pedido.cliente?.telefono || ''} · 💰 Pago: ${
                                     {efectivo: 'Efectivo', transferencia: 'Transferencia', tarjeta: 'Tarjeta'}[pedido.cliente?.pago] || pedido.cliente?.pago || ''
                                 }
                             </div>
                             <div class="da-pedido-meta">
-                                Dirección: ${pedido.cliente?.direccion || ''}
-                                ${pedido.cliente?.referencias ? ` · ${pedido.cliente.referencias}` : ''}
+                                📍 Dirección: ${pedido.cliente?.direccion || ''}
+                                ${pedido.cliente?.referencias ? ` · 📝 ${pedido.cliente.referencias}` : ''}
                             </div>
                         </div>
                         <div class="da-pedido-total">${formatARS(pedido.total)}</div>
@@ -629,18 +781,18 @@
 
                     <div class="da-pedido-items">
                         ${pedido.items?.map(it => `
-                            <div>${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}</div>
+                            <div>🍕 ${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}</div>
                         `).join('') || 'Sin items'}
                     </div>
 
                     <div class="da-pedido-actions">
                         <select class="da-estado-select" onchange="cambiarEstadoPedido('${pedido.id}', this.value)">
-                            <option value="Nuevo" ${pedido.estado === 'Nuevo' ? 'selected' : ''}>Nuevo</option>
-                            <option value="En preparación" ${pedido.estado === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                            <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>En camino</option>
-                            <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                            <option value="Nuevo" ${pedido.estado === 'Nuevo' ? 'selected' : ''}>🆕 Nuevo</option>
+                            <option value="En preparación" ${pedido.estado === 'En preparación' ? 'selected' : ''}>👨‍🍳 En preparación</option>
+                            <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>🚗 En camino</option>
+                            <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
                         </select>
-                        <button class="da-delete-btn" onclick="eliminarPedido('${pedido.id}')">Eliminar</button>
+                        <button class="da-delete-btn" onclick="eliminarPedido('${pedido.id}')">🗑️ Eliminar</button>
                     </div>
                 </div>
             `).join('');
@@ -668,6 +820,8 @@
         // INICIALIZAR
         // ============================================================
         // El login se muestra por defecto, el panel está oculto
+        console.log('🍕 PizzaFedeBar Admin Panel cargado');
+        console.log('🔑 Contraseña:', ADMIN_PASSWORD);
     </script>
 </body>
 </html>
