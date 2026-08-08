@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PizzasFedeBar - Pizzería a domicilio</title>
+    <title>PizzaFedeBar - Pizzería a domicilio</title>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Karla:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         * {
@@ -324,12 +324,17 @@
         }
         .dh-stock-info {
             font-size: 11px;
-            color: var(--dh-tomato);
             font-weight: bold;
             width: 100%;
         }
         .dh-stock-info.agotado {
             color: #999;
+        }
+        .dh-stock-info.bajo {
+            color: var(--dh-tomato);
+        }
+        .dh-stock-info.ok {
+            color: var(--dh-basil);
         }
         .dh-add-controls {
             display: flex;
@@ -378,6 +383,7 @@
         .dh-add-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            background: #999;
         }
 
         /* ---------- info strip ---------- */
@@ -583,6 +589,56 @@
             font-size: 13.5px;
         }
 
+        /* ---------- location button ---------- */
+        .dh-location-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'Karla', sans-serif;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s ease;
+            width: 100%;
+            justify-content: center;
+        }
+        .dh-location-btn:hover {
+            background: #3367d6;
+        }
+        .dh-location-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .dh-location-info {
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+        .dh-location-info.ok {
+            color: var(--dh-basil);
+        }
+        .dh-location-info.error {
+            color: var(--dh-tomato-dark);
+        }
+        .dh-ubi-enviada {
+            background: rgba(68, 87, 52, 0.08);
+            border: 1px solid var(--dh-basil);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            margin-top: 6px;
+            word-break: break-all;
+            display: none;
+        }
+        .dh-ubi-enviada.visible {
+            display: block;
+        }
+
         /* ---------- floating whatsapp ---------- */
         .dh-fab {
             position: fixed;
@@ -642,7 +698,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 100;
             overflow-y: auto;
             padding: 20px;
@@ -815,8 +871,22 @@
             margin-top: 4px;
             display: inline-block;
         }
+        .dh-admin-stock {
+            display: block;
+            padding: 8px 10px;
+            background: #f4e8cf;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .dh-admin-stock.limite {
+            color: var(--dh-tomato-dark);
+        }
+        .dh-admin-stock.sin-limite {
+            color: var(--dh-basil);
+        }
 
-        /* ---------- pedidos en admin ---------- */
+        /* ---------- admin pedidos ---------- */
         .dh-admin-pedido {
             background: var(--dh-mozz);
             border-radius: 8px;
@@ -877,10 +947,15 @@
             font-size: 12.5px;
             font-weight: 700;
         }
+        .dh-admin-refresh:hover {
+            background: var(--dh-char);
+            color: var(--dh-semolina);
+        }
         .dh-admin-tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .dh-admin-tab {
             border: 1.5px solid var(--dh-char);
@@ -903,6 +978,130 @@
             display: block;
         }
 
+        /* ---------- admin config ---------- */
+        .dh-config-section {
+            background: var(--dh-mozz);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 16px rgba(33, 23, 18, 0.08);
+        }
+        .dh-config-section h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .dh-config-section .dh-sub {
+            font-size: 13px;
+            color: rgba(33, 23, 18, 0.6);
+            margin-bottom: 12px;
+        }
+        .dh-config-section label {
+            display: block;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(33, 23, 18, 0.55);
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+        .dh-config-section textarea,
+        .dh-config-section input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1.5px solid var(--dh-line);
+            font-size: 13.5px;
+            font-family: 'Karla', sans-serif;
+            resize: vertical;
+        }
+        .dh-config-section textarea:focus,
+        .dh-config-section input:focus {
+            outline: 2px solid var(--dh-tomato);
+            border-color: var(--dh-tomato);
+        }
+        .dh-config-save {
+            background: var(--dh-basil);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13.5px;
+            margin-top: 16px;
+        }
+        .dh-config-save:hover {
+            filter: brightness(1.1);
+        }
+        .dh-config-preview {
+            background: var(--dh-semolina);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-top: 10px;
+            font-size: 13px;
+            white-space: pre-wrap;
+            border: 1px dashed var(--dh-line);
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .dh-config-preview.visible {
+            display: block;
+        }
+        .dh-config-preview strong {
+            color: var(--dh-tomato);
+        }
+        .dh-config-toggle {
+            background: var(--dh-tomato);
+            color: var(--dh-mozz);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .dh-config-toggle:hover {
+            background: var(--dh-tomato-dark);
+        }
+        .dh-campos-lista {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .dh-campo-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--dh-semolina);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: move;
+            border: 1px solid var(--dh-line);
+        }
+        .dh-campo-item:hover {
+            border-color: var(--dh-tomato);
+        }
+        .dh-campo-item .dh-drag {
+            cursor: grab;
+            color: rgba(33, 23, 18, 0.3);
+        }
+        .dh-campo-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        .dh-campo-item label {
+            margin: 0;
+            font-size: 12px;
+            text-transform: none;
+            font-family: 'Karla', sans-serif;
+            color: var(--dh-char);
+        }
+
         @media (max-width: 640px) {
             .dh-hero {
                 padding: 48px 16px 70px;
@@ -913,6 +1112,21 @@
             .dh-admin-row2 {
                 grid-template-columns: 1fr;
             }
+            .dh-campos-lista {
+                grid-template-columns: 1fr;
+            }
+            .dh-admin-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .dh-admin-toolbar div {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .dh-admin-reset {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -921,7 +1135,7 @@
         <!-- top bar -->
         <div class="dh-topbar">
             <div class="dh-brand">
-                <span class="dh-brand-name">PizzasFedeBar</span>
+                <span class="dh-brand-name">PizzaFedeBar</span>
             </div>
             <button class="dh-cart-btn" onclick="toggleCart()">
                 Mi pedido
@@ -932,14 +1146,14 @@
         <!-- hero -->
         <section class="dh-hero">
             <div class="dh-hero-inner">
-                <span class="dh-badge">
+                <span class="dh-badge" id="heroBadge">
                     <span class="dh-badge-dot"></span>
                     Delivery sin cargo
                 </span>
-                <h1 class="dh-display">
+                <h1 class="dh-display" id="heroTitulo">
                     El antojo llama..., <span>nosotros llevamos la pizza</span>
                 </h1>
-                <p>
+                <p id="heroSubtitulo">
                     Elegí tus pizzas favoritas, recién horneadas para comer ya o listas para
                     hornear en casa. Te las llevamos sin costo de envío a tu Domicilio.
                 </p>
@@ -988,7 +1202,7 @@
 
         <!-- footer -->
         <footer class="dh-footer">
-            <strong>PizzasFedeBar</strong>
+            <strong>PizzaFedeBar</strong>
             Pizzas a domicilio · Delivery sin cargo
             <div style="margin-top: 6px;">Escribinos por WhatsApp para cualquier consulta</div>
             <div class="dh-admin-link">
@@ -997,7 +1211,7 @@
         </footer>
 
         <!-- floating whatsapp button -->
-        <a class="dh-fab" href="https://wa.me/5493883143816?text=Hola%20PizzasFedeBar%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
+        <a class="dh-fab" href="https://wa.me/5493883143816?text=Hola%20PizzaFedeBar%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
             <svg viewBox="0 0 32 32" width="28" height="28" fill="#05320f">
                 <path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.36.66 4.56 1.8 6.44L4 29l7.72-1.75a12.9 12.9 0 0 0 4.3.73c6.62 0 12.02-5.4 12.02-12.02C28.04 8.4 22.64 3 16.02 3zm0 21.9c-1.36 0-2.68-.28-3.9-.83l-.28-.13-4.6 1.04 1-4.48-.18-.29a9.87 9.87 0 0 1-1.53-5.19c0-5.46 4.44-9.9 9.9-9.9 5.46 0 9.9 4.44 9.9 9.9 0 5.46-4.44 9.88-9.9 9.88zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.16-.17.2-.34.22-.63.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.19-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z" />
             </svg>
@@ -1019,7 +1233,7 @@
         <div class="dh-admin-panel" id="adminPanel">
             <div class="dh-admin-content">
                 <button class="dh-admin-close" onclick="toggleAdminPanel()">×</button>
-                <h2 class="dh-admin-title">🍕 Administración - PizzasFedeBar</h2>
+                <h2 class="dh-admin-title">🍕 Administración - PizzaFedeBar</h2>
                 
                 <!-- Login Admin -->
                 <div id="adminLogin">
@@ -1034,15 +1248,16 @@
                 <!-- Panel Admin (oculto) -->
                 <div id="adminContent" style="display:none;">
                     <div class="dh-admin-tabs">
-                        <button class="dh-admin-tab active" onclick="adminTab('menu')">Menú</button>
-                        <button class="dh-admin-tab" onclick="adminTab('pedidos')">Pedidos <span id="adminPedidosCount"></span></button>
+                        <button class="dh-admin-tab active" onclick="adminTab('menu')">📋 Menú</button>
+                        <button class="dh-admin-tab" onclick="adminTab('pedidos')">📦 Pedidos <span id="adminPedidosCount"></span></button>
+                        <button class="dh-admin-tab" onclick="adminTab('config')">⚙️ Configuración</button>
                     </div>
 
                     <!-- Tab Menú -->
                     <div class="dh-admin-tab-content active" id="adminTabMenu">
                         <div class="dh-admin-toolbar">
                             <div>
-                                <button class="dh-admin-add" onclick="adminAgregarPizza()">+ Agregar pizza</button>
+                                <button class="dh-admin-add" onclick="adminAgregarPizza()">➕ Agregar pizza</button>
                                 <button class="dh-admin-reset" onclick="adminResetearVentas()">🔄 Resetear ventas diarias</button>
                             </div>
                             <span id="adminGuardadoOk" class="dh-admin-saved" style="display:none;">✓ Guardado</span>
@@ -1058,6 +1273,46 @@
                         </div>
                         <div id="adminPedidosList"></div>
                     </div>
+
+                    <!-- Tab Configuración -->
+                    <div class="dh-admin-tab-content" id="adminTabConfig">
+                        <div class="dh-config-section">
+                            <h3>📝 Mensaje de Bienvenida</h3>
+                            <p class="dh-sub">Este mensaje se muestra en el hero de la página principal.</p>
+                            
+                            <label>Título principal</label>
+                            <input type="text" id="configTitulo" placeholder="Ej: El antojo llama..." />
+                            
+                            <label>Subtítulo / Descripción</label>
+                            <textarea rows="3" id="configSubtitulo" placeholder="Descripción que aparece debajo del título..."></textarea>
+                            
+                            <label>Texto del badge (etiqueta superior)</label>
+                            <input type="text" id="configBadge" placeholder="Ej: Delivery sin cargo" />
+                            
+                            <button class="dh-config-save" onclick="guardarConfiguracion()">💾 Guardar configuración</button>
+                            <span id="configGuardadoOk" class="dh-admin-saved" style="display:none;margin-left:12px;">✓ Guardado</span>
+                        </div>
+
+                        <div class="dh-config-section">
+                            <h3>📋 Estructura del Mensaje de Pedido</h3>
+                            <p class="dh-sub">Personalizá el orden y los campos que aparecen en el mensaje de WhatsApp.</p>
+                            
+                            <label>Campos del mensaje</label>
+                            <div class="dh-campos-lista" id="camposLista"></div>
+                            
+                            <label>Texto adicional al final del mensaje</label>
+                            <textarea rows="3" id="configMensajeFinal" placeholder="Ej: ¡Gracias por tu pedido!..."></textarea>
+                            
+                            <button class="dh-config-save" onclick="guardarConfiguracion()">💾 Guardar configuración</button>
+                            <span id="configGuardadoOk2" class="dh-admin-saved" style="display:none;margin-left:12px;">✓ Guardado</span>
+                        </div>
+
+                        <div class="dh-config-section">
+                            <h3>👁️ Vista previa del mensaje</h3>
+                            <button class="dh-config-toggle" onclick="mostrarVistaPrevia()">🔍 Ver vista previa</button>
+                            <div id="vistaPrevia" class="dh-config-preview"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1071,6 +1326,7 @@
         const ADMIN_PASSWORD = "admin2026";
         const MENU_KEY = "dh_menu";
         const PEDIDOS_KEY = "dh_pedidos";
+        const CONFIG_KEY = "dh_configuracion";
 
         const MENU_POR_DEFECTO = [{
             id: "m1",
@@ -1078,7 +1334,7 @@
             descripcion: "Salsa de tomate, queso y orégano.",
             precio: 7500,
             categoria: "cocida",
-            imagen: "Muzzarella-comun.jpg",
+            imagen: "https://images.unsplash.com/photo-1548365328-9f547fb0953e?q=80&w=800&auto=format&fit=crop",
             disponible: true,
             limiteDiario: 20,
             vendidasHoy: 0
@@ -1088,24 +1344,70 @@
             descripcion: "Queso, Jamón, Aceitunas, Tomate en rodajas, Salsa de Tomate, Orégano.",
             precio: 8500,
             categoria: "cocida",
-            imagen: "piza napolitana.jpg",
+            imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=800&auto=format&fit=crop",
             disponible: true,
             limiteDiario: 15,
             vendidasHoy: 0
         }, {
-            
-           
-           
             id: "m3",
-            nombre: "Pizza Común Para Hornear",
-            descripcion: "Salsa de Tomate,Queso,Aceitunas,Oregano.",
+            nombre: "Fugazzeta",
+            descripcion: "Doble queso y cebolla a la parrilla.",
+            precio: 9200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 10,
+            vendidasHoy: 0
+        }, {
+            id: "m4",
+            nombre: "Especial",
+            descripcion: "Queso, jamón cocido y morrones asados.",
+            precio: 10500,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 12,
+            vendidasHoy: 0
+        }, {
+            id: "m5",
+            nombre: "Cuatro Quesos",
+            descripcion: "Muzzarella, provolone, roquefort y parmesano.",
+            precio: 11200,
+            categoria: "lista",
+            imagen: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop",
+            disponible: true,
+            limiteDiario: 8,
+            vendidasHoy: 0
+        }, {
+            id: "m6",
+            nombre: "Calabresa",
+            descripcion: "Muzzarella, longaniza calabresa y morrones.",
             precio: 10200,
-            categoria: "Lista Para Hornear",
-            imagen: "pizza.jpg",
+            categoria: "cocida",
+            imagen: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=800&auto=format&fit=crop",
             disponible: true,
             limiteDiario: 10,
             vendidasHoy: 0
         }];
+
+        const CAMPOS_POR_DEFECTO = [
+            { id: 'nombre', label: '👤 Nombre', activo: true },
+            { id: 'telefono', label: '📱 Teléfono', activo: true },
+            { id: 'direccion', label: '📍 Dirección', activo: true },
+            { id: 'referencias', label: '📝 Referencias', activo: true },
+            { id: 'ubicacion', label: '🗺️ Ubicación Google Maps', activo: true },
+            { id: 'pago', label: '💳 Método de pago', activo: true },
+            { id: 'items', label: '🍕 Items del pedido', activo: true },
+            { id: 'total', label: '💰 Total', activo: true }
+        ];
+
+        let configuracion = {
+            titulo: 'El antojo llama..., nosotros llevamos la pizza',
+            subtitulo: 'Elegí tus pizzas favoritas, recién horneadas para comer ya o listas para hornear en casa. Te las llevamos sin costo de envío a tu Domicilio.',
+            badge: 'Delivery sin cargo',
+            campos: JSON.parse(JSON.stringify(CAMPOS_POR_DEFECTO)),
+            mensajeFinal: '¡Gracias por tu pedido! 🍕'
+        };
 
         // ============================================================
         // ESTADO GLOBAL
@@ -1115,12 +1417,14 @@
         let carrito = {};
         let cartOpen = false;
         let enviado = false;
+        let ubicacionCompartida = null;
         let datosCliente = {
             nombre: "",
             telefono: "",
             direccion: "",
             referencias: "",
-            pago: "efectivo"
+            pago: "efectivo",
+            ubicacion: ""
         };
         let adminAutenticado = false;
         let adminTabActual = "menu";
@@ -1183,12 +1487,29 @@
                 }
             } catch (e) {}
             
-            // Si no hay datos, usar menú por defecto
             menu = JSON.parse(JSON.stringify(MENU_POR_DEFECTO));
             try {
                 localStorage.setItem(MENU_KEY, JSON.stringify(menu));
             } catch (e) {}
             renderizarMenu();
+        }
+
+        // ============================================================
+        // CARGAR CONFIGURACIÓN
+        // ============================================================
+        function cargarConfiguracionCliente() {
+            try {
+                const raw = localStorage.getItem(CONFIG_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    configuracion = { ...configuracion, ...data };
+                }
+            } catch (e) {}
+            
+            // Aplicar configuración al hero
+            document.getElementById('heroTitulo').innerHTML = configuracion.titulo || 'El antojo llama..., <span>nosotros llevamos la pizza</span>';
+            document.getElementById('heroSubtitulo').textContent = configuracion.subtitulo || 'Elegí tus pizzas favoritas...';
+            document.getElementById('heroBadge').innerHTML = `<span class="dh-badge-dot"></span> ${configuracion.badge || 'Delivery sin cargo'}`;
         }
 
         // ============================================================
@@ -1230,16 +1551,19 @@
                 const disponibles = obtenerDisponibles(pizza.id);
                 const agotado = disponibles <= 0;
                 const limiteActivo = pizza.limiteDiario && pizza.limiteDiario > 0;
-                const vendidas = pizza.vendidasHoy || 0;
                 
                 let stockInfo = '';
+                let stockClass = '';
                 if (limiteActivo) {
                     if (agotado) {
-                        stockInfo = `<div class="dh-stock-info agotado">❌ Agotado por hoy</div>`;
+                        stockInfo = '❌ Agotado por hoy';
+                        stockClass = 'agotado';
                     } else if (disponibles <= 5) {
-                        stockInfo = `<div class="dh-stock-info">⚠️ Quedan ${disponibles} unidades</div>`;
+                        stockInfo = `⚠️ Quedan ${disponibles} unidades`;
+                        stockClass = 'bajo';
                     } else {
-                        stockInfo = `<div class="dh-stock-info" style="color:var(--dh-basil);">✅ ${disponibles} disponibles</div>`;
+                        stockInfo = `✅ ${disponibles} disponibles`;
+                        stockClass = 'ok';
                     }
                 }
 
@@ -1259,7 +1583,7 @@
                         <div class="dh-card-foot">
                             <div>
                                 <span class="dh-price dh-mono">${formatARS(pizza.precio)}</span>
-                                ${stockInfo}
+                                ${stockInfo ? `<div class="dh-stock-info ${stockClass}">${stockInfo}</div>` : ''}
                             </div>
                             ${agotado ? `
                                 <button class="dh-add-btn" disabled style="background:#999;">
@@ -1357,6 +1681,89 @@
             }
         }
 
+        // ============================================================
+        // COMPARTIR UBICACIÓN
+        // ============================================================
+        function compartirUbicacion() {
+            const btn = document.getElementById('locationBtn');
+            const status = document.getElementById('locationStatus');
+            const display = document.getElementById('locationDisplay');
+            
+            if (!navigator.geolocation) {
+                status.textContent = '❌ Tu navegador no soporta geolocalización.';
+                status.className = 'dh-location-info error';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Obteniendo ubicación...';
+            status.textContent = '';
+            status.className = 'dh-location-info';
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const precision = position.coords.accuracy;
+                    
+                    const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+                    ubicacionCompartida = { lat, lng, mapsLink };
+                    
+                    document.getElementById('clienteUbicacion').value = mapsLink;
+                    
+                    status.textContent = '✅ Ubicación obtenida correctamente';
+                    status.className = 'dh-location-info ok';
+                    
+                    display.className = 'dh-ubi-enviada visible';
+                    display.innerHTML = `
+                        📍 <a href="${mapsLink}" target="_blank" style="color:var(--dh-tomato);font-weight:bold;">
+                            Ver ubicación en Google Maps
+                        </a>
+                        <br><small>Precisión: ${Math.round(precision)} metros</small>
+                    `;
+                    
+                    btn.textContent = '📍 Ubicación compartida ✅';
+                    btn.style.background = '#34a853';
+                    
+                    datosCliente.ubicacion = mapsLink;
+                    datosCliente.lat = lat;
+                    datosCliente.lng = lng;
+                    
+                    setTimeout(() => {
+                        btn.disabled = false;
+                    }, 2000);
+                },
+                function(error) {
+                    let mensaje = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            mensaje = '❌ Permiso denegado. Activá la ubicación en tu navegador.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            mensaje = '❌ No se pudo obtener la ubicación. Intentá de nuevo.';
+                            break;
+                        case error.TIMEOUT:
+                            mensaje = '⏱️ Tiempo agotado. Intentá de nuevo.';
+                            break;
+                        default:
+                            mensaje = '❌ Error al obtener ubicación.';
+                    }
+                    status.textContent = mensaje;
+                    status.className = 'dh-location-info error';
+                    btn.textContent = '📍 Compartir mi ubicación actual';
+                    btn.disabled = false;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        // ============================================================
+        // RENDERIZAR CARRITO
+        // ============================================================
         function renderizarCarrito() {
             const body = document.getElementById('cartBody');
             const items = obtenerItemsCarrito();
@@ -1409,6 +1816,16 @@
                 </div>
 
                 <div class="dh-form-group">
+                    <label>Ubicación para el delivery</label>
+                    <button class="dh-location-btn" onclick="compartirUbicacion()" id="locationBtn">
+                        📍 Compartir mi ubicación actual
+                    </button>
+                    <div id="locationStatus" class="dh-location-info"></div>
+                    <div id="locationDisplay" class="dh-ubi-enviada"></div>
+                    <input type="hidden" id="clienteUbicacion" value="${datosCliente.ubicacion || ''}" />
+                </div>
+
+                <div class="dh-form-group">
                     <label>Medio de pago</label>
                     <div class="dh-pay-options">
                         ${['efectivo', 'transferencia', 'tarjeta'].map(p => `
@@ -1442,6 +1859,9 @@
             document.getElementById('clienteReferencias')?.addEventListener('input', (e) => {
                 datosCliente.referencias = e.target.value;
             });
+            document.getElementById('clienteUbicacion')?.addEventListener('input', (e) => {
+                datosCliente.ubicacion = e.target.value;
+            });
         }
 
         // ============================================================
@@ -1464,7 +1884,6 @@
 
             const items = obtenerItemsCarrito();
             
-            // Verificar disponibilidad final
             for (const item of items) {
                 const disponibles = obtenerDisponibles(item.id);
                 if (item.cantidad > disponibles) {
@@ -1479,7 +1898,11 @@
                 id: `p_${Date.now()}`,
                 fecha: new Date().toISOString(),
                 estado: "Nuevo",
-                cliente: { ...datosCliente },
+                cliente: { 
+                    ...datosCliente,
+                    ubicacion: document.getElementById('clienteUbicacion').value || '',
+                    ubicacionCompartida: ubicacionCompartida
+                },
                 items: items.map(({ id, nombre, precio, cantidad }) => ({
                     id,
                     nombre,
@@ -1489,7 +1912,6 @@
                 total
             };
 
-            // Actualizar ventas diarias
             try {
                 const nuevoMenu = menu.map(p => {
                     const item = items.find(i => i.id === p.id);
@@ -1505,14 +1927,13 @@
                 localStorage.setItem(MENU_KEY, JSON.stringify(nuevoMenu));
             } catch (e) {}
 
-            // Guardar pedido
             try {
                 const raw = localStorage.getItem(PEDIDOS_KEY);
                 const previos = raw ? JSON.parse(raw) : [];
                 localStorage.setItem(PEDIDOS_KEY, JSON.stringify([pedido, ...previos]));
             } catch (e) {}
 
-            // Generar mensaje para WhatsApp
+            // Generar mensaje con la configuración
             const lineas = items
                 .map(it => `• ${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}`)
                 .join('%0A');
@@ -1523,20 +1944,30 @@
                 tarjeta: "Tarjeta al recibir"
             } [datosCliente.pago];
 
+            let ubicacionTexto = '';
+            if (ubicacionCompartida) {
+                ubicacionTexto = `%0A*🗺️ Ubicación Google Maps:* ${encodeURIComponent(ubicacionCompartida.mapsLink)}`;
+            } else if (datosCliente.ubicacion) {
+                ubicacionTexto = `%0A*🗺️ Ubicación Google Maps:* ${encodeURIComponent(datosCliente.ubicacion)}`;
+            }
+
             const mensaje =
-                `*Pedido PizzasFedeBar*%0A%0A` +
+                `*🍕 Pedido PizzaFedeBar*%0A%0A` +
                 `${lineas}%0A%0A` +
-                `*Total: ${formatARS(total)}*%0A%0A` +
-                `*Nombre:* ${encodeURIComponent(datosCliente.nombre)}%0A` +
-                `*Teléfono:* ${encodeURIComponent(datosCliente.telefono)}%0A` +
-                `*Dirección:* ${encodeURIComponent(datosCliente.direccion)}%0A` +
-                (datosCliente.referencias ? `*Referencias:* ${encodeURIComponent(datosCliente.referencias)}%0A` : '') +
-                `*Pago:* ${metodoPago}`;
+                `*💰 Total: ${formatARS(total)}*%0A%0A` +
+                `*👤 Nombre:* ${encodeURIComponent(datosCliente.nombre)}%0A` +
+                `*📱 Teléfono:* ${encodeURIComponent(datosCliente.telefono)}%0A` +
+                `*📍 Dirección:* ${encodeURIComponent(datosCliente.direccion)}%0A` +
+                (datosCliente.referencias ? `*📝 Referencias:* ${encodeURIComponent(datosCliente.referencias)}%0A` : '') +
+                ubicacionTexto +
+                `%0A*💳 Pago:* ${metodoPago}%0A%0A` +
+                `${configuracion.mensajeFinal || '¡Gracias por tu pedido! 🍕'}`;
 
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`, '_blank');
 
             enviado = true;
             carrito = {};
+            ubicacionCompartida = null;
             actualizarCarrito();
             renderizarMenu();
             setTimeout(() => {
@@ -1554,6 +1985,7 @@
             if (panel.classList.contains('open')) {
                 adminCargarPedidos();
                 adminRenderizarMenu();
+                cargarConfiguracionAdmin();
             }
         }
 
@@ -1565,6 +1997,7 @@
                 document.getElementById('adminContent').style.display = 'block';
                 adminRenderizarMenu();
                 adminCargarPedidos();
+                cargarConfiguracionAdmin();
             } else {
                 document.getElementById('adminLoginError').style.display = 'block';
                 setTimeout(() => {
@@ -1579,9 +2012,14 @@
                 btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab));
             });
             document.querySelectorAll('.dh-admin-tab-content').forEach(el => {
-                el.classList.toggle('active', el.id === 'adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+                const tabId = el.id.replace('adminTab', '').toLowerCase();
+                el.classList.toggle('active', tabId === tab);
             });
             if (tab === 'pedidos') adminCargarPedidos();
+            if (tab === 'config') {
+                cargarConfiguracionAdmin();
+                setTimeout(mostrarVistaPrevia, 300);
+            }
         }
 
         function adminGuardarMenu(nuevoMenu) {
@@ -1603,7 +2041,12 @@
                 return;
             }
 
-            grid.innerHTML = menu.map(p => `
+            grid.innerHTML = menu.map(p => {
+                const vendidas = p.vendidasHoy || 0;
+                const limite = p.limiteDiario || 0;
+                const tieneLimite = limite > 0;
+                
+                return `
                 <div class="dh-admin-card">
                     <div class="dh-admin-card-top">
                         <img class="dh-admin-card-img" src="${p.imagen}" alt="${p.nombre}" />
@@ -1613,7 +2056,7 @@
                                 <input value="${p.nombre}" onchange="adminActualizarPizza('${p.id}', 'nombre', this.value)" />
                             </div>
                             <label class="dh-admin-file-btn">
-                                Subir imagen
+                                📷 Subir imagen
                                 <input type="file" accept="image/*" style="display:none" onchange="adminSubirImagen('${p.id}', this.files[0])" />
                             </label>
                         </div>
@@ -1645,16 +2088,16 @@
 
                     <div class="dh-admin-row2">
                         <div class="dh-admin-field">
-                            <label>Límite diario</label>
-                            <input type="number" min="0" value="${p.limiteDiario || 0}" 
-                                   onchange="adminActualizarPizza('${p.id}', 'limiteDiario', Number(this.value))" 
-                                   placeholder="0 = sin límite" />
+                            <label>Límite diario (0 = sin límite)</label>
+                            <input type="number" min="0" value="${limite}" 
+                                   onchange="adminActualizarPizza('${p.id}', 'limiteDiario', Number(this.value))" />
                         </div>
                         <div class="dh-admin-field">
                             <label>Vendidas hoy</label>
-                            <span style="display:block;padding:8px 10px;background:#f4e8cf;border-radius:5px;font-weight:bold;">
-                                ${p.vendidasHoy || 0}
-                                ${p.limiteDiario ? ` / ${p.limiteDiario}` : ' (sin límite)'}
+                            <span class="dh-admin-stock ${tieneLimite ? 'limite' : 'sin-limite'}">
+                                ${vendidas} ${tieneLimite ? `/ ${limite}` : '(sin límite)'}
+                                ${tieneLimite && vendidas >= limite ? ' 🔴 AGOTADO' : ''}
+                                ${tieneLimite && vendidas > 0 && vendidas < limite ? ` 🟢 ${limite - vendidas} disponibles` : ''}
                             </span>
                         </div>
                     </div>
@@ -1665,10 +2108,10 @@
                                    onchange="adminActualizarPizza('${p.id}', 'disponible', this.checked)" />
                             Disponible
                         </label>
-                        <button class="dh-admin-delete" onclick="adminEliminarPizza('${p.id}')">Eliminar</button>
+                        <button class="dh-admin-delete" onclick="adminEliminarPizza('${p.id}')">🗑️ Eliminar</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function adminActualizarPizza(id, campo, valor) {
@@ -1704,15 +2147,15 @@
         }
 
         function adminResetearVentas() {
-            if (!confirm('¿Resetear todas las ventas diarias?')) return;
+            if (!confirm('⚠️ ¿Resetear todas las ventas diarias?\nEsto pondrá a 0 las "vendidasHoy" de todas las pizzas.')) return;
+            
             const nuevoMenu = menu.map(p => ({
                 ...p,
                 vendidasHoy: 0
             }));
             adminGuardarMenu(nuevoMenu);
             localStorage.setItem('dh_ultimo_reset', new Date().toDateString());
-            alert('¡Ventas diarias reseteadas!');
-            renderizarMenu();
+            alert('✅ ¡Ventas diarias reseteadas correctamente!');
         }
 
         // ============================================================
@@ -1737,7 +2180,7 @@
             info.textContent = `${pedidos.length} pedido${pedidos.length === 1 ? '' : 's'} guardado${pedidos.length === 1 ? '' : 's'}`;
 
             if (pedidos.length === 0) {
-                list.innerHTML = `<div class="dh-admin-empty">Todavía no llegó ningún pedido.</div>`;
+                list.innerHTML = `<div class="dh-admin-empty">📭 Todavía no llegó ningún pedido.</div>`;
                 return;
             }
 
@@ -1745,42 +2188,51 @@
                 <div class="dh-admin-pedido">
                     <div class="dh-admin-pedido-top">
                         <div>
-                            <div class="dh-admin-pedido-cliente">${pedido.cliente?.nombre || 'Sin nombre'}</div>
+                            <div class="dh-admin-pedido-cliente">👤 ${pedido.cliente?.nombre || 'Sin nombre'}</div>
                             <div class="dh-admin-pedido-meta">
-                                ${new Date(pedido.fecha).toLocaleString('es-AR')} · Tel: ${pedido.cliente?.telefono || ''} · Pago: ${
+                                📅 ${new Date(pedido.fecha).toLocaleString('es-AR')} · 📱 Tel: ${pedido.cliente?.telefono || ''} · 💰 Pago: ${
                                     {efectivo: 'Efectivo', transferencia: 'Transferencia', tarjeta: 'Tarjeta'}[pedido.cliente?.pago] || pedido.cliente?.pago || ''
                                 }
                             </div>
                             <div class="dh-admin-pedido-meta">
-                                Dirección: ${pedido.cliente?.direccion || ''}
-                                ${pedido.cliente?.referencias ? ` · ${pedido.cliente.referencias}` : ''}
+                                📍 Dirección: ${pedido.cliente?.direccion || ''}
+                                ${pedido.cliente?.referencias ? ` · 📝 ${pedido.cliente.referencias}` : ''}
                             </div>
+                            ${pedido.cliente?.ubicacion ? `
+                                <div class="dh-admin-pedido-meta">
+                                    🗺️ <a href="${pedido.cliente.ubicacion}" target="_blank" style="color:var(--dh-tomato);">
+                                        Ver ubicación en Google Maps
+                                    </a>
+                                </div>
+                            ` : ''}
                         </div>
                         <div class="dh-admin-pedido-total">${formatARS(pedido.total)}</div>
                     </div>
 
                     <div class="dh-admin-pedido-items">
                         ${pedido.items?.map(it => `
-                            <div>${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}</div>
+                            <div>🍕 ${it.cantidad}x ${it.nombre} — ${formatARS(it.precio * it.cantidad)}</div>
                         `).join('') || 'Sin items'}
                     </div>
 
                     <div class="dh-admin-pedido-actions">
-                        <select class="dh-admin-estado" onchange="adminCambiarEstadoPedido('${pedido.id}', this.value, ${JSON.stringify(pedidos).replace(/"/g, '&quot;')})">
-                            <option value="Nuevo" ${pedido.estado === 'Nuevo' ? 'selected' : ''}>Nuevo</option>
-                            <option value="En preparación" ${pedido.estado === 'En preparación' ? 'selected' : ''}>En preparación</option>
-                            <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>En camino</option>
-                            <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>Entregado</option>
+                        <select class="dh-admin-estado" onchange="adminCambiarEstadoPedido('${pedido.id}', this.value)">
+                            <option value="Nuevo" ${pedido.estado === 'Nuevo' ? 'selected' : ''}>🆕 Nuevo</option>
+                            <option value="En preparación" ${pedido.estado === 'En preparación' ? 'selected' : ''}>👨‍🍳 En preparación</option>
+                            <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>🚗 En camino</option>
+                            <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
                         </select>
-                        <button class="dh-admin-delete" onclick="adminEliminarPedido('${pedido.id}')">Eliminar</button>
+                        <button class="dh-admin-delete" onclick="adminEliminarPedido('${pedido.id}')">🗑️ Eliminar</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function adminCambiarEstadoPedido(id, estado, pedidos) {
-            const nuevos = pedidos.map(p => p.id === id ? { ...p, estado } : p);
+        function adminCambiarEstadoPedido(id, estado) {
             try {
+                const raw = localStorage.getItem(PEDIDOS_KEY);
+                const pedidos = raw ? JSON.parse(raw) : [];
+                const nuevos = pedidos.map(p => p.id === id ? { ...p, estado } : p);
                 localStorage.setItem(PEDIDOS_KEY, JSON.stringify(nuevos));
             } catch (e) {}
             adminCargarPedidos();
@@ -1798,9 +2250,157 @@
         }
 
         // ============================================================
+        // ADMIN - CONFIGURACIÓN
+        // ============================================================
+        function cargarConfiguracionAdmin() {
+            try {
+                const raw = localStorage.getItem(CONFIG_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    configuracion = { ...configuracion, ...data };
+                }
+            } catch (e) {}
+            
+            document.getElementById('configTitulo').value = configuracion.titulo || '';
+            document.getElementById('configSubtitulo').value = configuracion.subtitulo || '';
+            document.getElementById('configBadge').value = configuracion.badge || '';
+            document.getElementById('configMensajeFinal').value = configuracion.mensajeFinal || '';
+            
+            renderizarCampos();
+        }
+
+        function renderizarCampos() {
+            const container = document.getElementById('camposLista');
+            container.innerHTML = '';
+            
+            configuracion.campos.forEach((campo, index) => {
+                const div = document.createElement('div');
+                div.className = 'dh-campo-item';
+                div.draggable = true;
+                div.dataset.index = index;
+                
+                div.innerHTML = `
+                    <span class="dh-drag">⠿</span>
+                    <input type="checkbox" ${campo.activo ? 'checked' : ''} 
+                           onchange="toggleCampo(${index}, this.checked)" />
+                    <label>${campo.label}</label>
+                `;
+                
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', index);
+                });
+                
+                div.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                div.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toIndex = parseInt(div.dataset.index);
+                    if (fromIndex !== toIndex) {
+                        reordenarCampos(fromIndex, toIndex);
+                    }
+                });
+                
+                container.appendChild(div);
+            });
+        }
+
+        function toggleCampo(index, activo) {
+            configuracion.campos[index].activo = activo;
+            guardarConfiguracion();
+        }
+
+        function reordenarCampos(from, to) {
+            const item = configuracion.campos.splice(from, 1)[0];
+            configuracion.campos.splice(to, 0, item);
+            guardarConfiguracion();
+            renderizarCampos();
+        }
+
+        function guardarConfiguracion() {
+            const titulo = document.getElementById('configTitulo').value;
+            const subtitulo = document.getElementById('configSubtitulo').value;
+            const badge = document.getElementById('configBadge').value;
+            const mensajeFinal = document.getElementById('configMensajeFinal').value;
+            
+            configuracion = {
+                ...configuracion,
+                titulo,
+                subtitulo,
+                badge,
+                mensajeFinal
+            };
+            
+            try {
+                localStorage.setItem(CONFIG_KEY, JSON.stringify(configuracion));
+                mostrarConfigGuardado();
+                mostrarVistaPrevia();
+                // Aplicar al cliente
+                cargarConfiguracionCliente();
+            } catch (e) {}
+        }
+
+        function mostrarConfigGuardado() {
+            ['configGuardadoOk', 'configGuardadoOk2'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.display = 'inline';
+                    setTimeout(() => el.style.display = 'none', 1800);
+                }
+            });
+        }
+
+        function mostrarVistaPrevia() {
+            const preview = document.getElementById('vistaPrevia');
+            preview.className = 'dh-config-preview visible';
+            
+            const camposActivos = configuracion.campos.filter(c => c.activo);
+            
+            let mensaje = `*🍕 Pedido PizzaFedeBar*\n\n`;
+            
+            if (camposActivos.some(c => c.id === 'items')) {
+                mensaje += `• 2x Pizza Común — $15,000\n`;
+                mensaje += `• 1x Napolitana — $8,500\n\n`;
+            }
+            
+            if (camposActivos.some(c => c.id === 'total')) {
+                mensaje += `*💰 Total: $23,500*\n\n`;
+            }
+            
+            const ordenCampos = ['nombre', 'telefono', 'direccion', 'referencias', 'ubicacion', 'pago'];
+            const labels = {
+                nombre: '👤 Nombre',
+                telefono: '📱 Teléfono',
+                direccion: '📍 Dirección',
+                referencias: '📝 Referencias',
+                ubicacion: '🗺️ Google Maps',
+                pago: '💳 Pago'
+            };
+            
+            ordenCampos.forEach(id => {
+                const campo = camposActivos.find(c => c.id === id);
+                if (campo) {
+                    const valor = id === 'ubicacion' ? 'https://maps.google.com/...' : 
+                                id === 'pago' ? 'Efectivo' : 
+                                `[${campo.label}]`;
+                    mensaje += `*${labels[id] || campo.label}:* ${valor}\n`;
+                }
+            });
+            
+            if (configuracion.mensajeFinal) {
+                mensaje += `\n${configuracion.mensajeFinal}`;
+            }
+            
+            preview.textContent = mensaje;
+        }
+
+        // ============================================================
         // INICIALIZAR
         // ============================================================
         cargarMenu();
+        cargarConfiguracionCliente();
         actualizarCarrito();
 
         // Cerrar admin con ESC
@@ -1810,12 +2410,15 @@
             }
         });
 
-        // Cerrar admin click fuera
         document.getElementById('adminPanel').addEventListener('click', function(e) {
             if (e.target === this) {
                 this.classList.remove('open');
             }
         });
+
+        console.log('🍕 PizzaFedeBar - Página del Cliente cargada');
+        console.log('🔑 Admin: haz clic en "Administrar" al final de la página');
+        console.log('📱 WhatsApp:', WHATSAPP_NUMBER);
     </script>
 </body>
 </html>
